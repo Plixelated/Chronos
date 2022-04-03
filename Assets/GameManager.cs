@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         player.currentAge = player.startingAge;
+        player.ageCount.text = $"Age: {player.currentAge.ToString()}";
         pathManager.ResetPaths();
         player.GetComponent<SpriteRenderer>().enabled = false;
         player.transform.position = startingCoordinates;

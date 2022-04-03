@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI ageCount;
 
+    public bool up;
+    public bool down;
+    public bool left;
+    public bool right;
+
     private void OnEnable()
     {
        
@@ -57,6 +62,38 @@ public class PlayerController : MonoBehaviour
         var checkYObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput, 0f), 0.25f, obstacle);
         var checkYPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput, 0f), 0.25f, pathway);
 
+        if (input.xInput == -1)
+        {
+            left = true;
+            right = false;
+        }
+        if (input.xInput == 1)
+        {
+            right = true;
+            left = false;
+        }
+        if (input.xInput == 0)
+        {
+            right = false;
+            left = false;
+        }
+
+        if (input.yInput == -1)
+        {
+            down = true;
+            up = false;
+        }
+        if (input.yInput == 1)
+        {
+            down = false;
+            up = true;
+        }
+        if (input.yInput == 0)
+        {
+            down = false;
+            up = false;
+        }
+
         if (Vector2.Distance(transform.position, targetCell.position) <= movementCheckThreshold)
         {
 
@@ -67,7 +104,33 @@ public class PlayerController : MonoBehaviour
                 {
                     currentAge += agingRate;
                     ageCount.text = $"Age: {currentAge.ToString()}";
-                    targetCell.position += new Vector3(input.xInput, 0f, 0f);
+
+                    if (checkXPath.tag != "Doubler")
+                    {
+                        //if (checkXPath.tag != "OneWay")
+                        //{
+                            targetCell.position += new Vector3(input.xInput, 0f, 0f);
+                        //}
+                        //else if (checkXPath.tag == "OneWay")
+                        //{
+                        //    if (right && checkXPath.GetComponent<OneWay>().left || left && checkXPath.GetComponent<OneWay>().right)
+                        //    {
+                        //        if (right)
+                        //            right = false;
+                        //        if (left)
+                        //            left = false;
+                        //        Debug.Log(currentAge);
+                        //        Debug.Log("Right: " + right);
+                        //        Debug.Log("Left:" + left);
+                        //    }
+                        //    else
+                        //    {
+                        //        targetCell.position += new Vector3(input.xInput, 0f, 0f);
+                        //    }
+                        //}
+                    }
+                    else
+                        targetCell.position += new Vector3(input.xInput * 2, 0f, 0f);
 
                     if (checkXPath.tag == "Swapper")
                     {
@@ -98,8 +161,12 @@ public class PlayerController : MonoBehaviour
                 {
                     currentAge += agingRate;
                     ageCount.text = $"Age: {currentAge.ToString()}";
-                    targetCell.position += new Vector3(0f, input.yInput, 0f);
                     
+                    if(checkYPath.tag != "Doubler") 
+                        targetCell.position += new Vector3(0f, input.yInput, 0f);
+                    else
+                        targetCell.position += new Vector3(0f, input.yInput*2, 0f);
+
                     if (checkYPath.tag == "Swapper")
                     {
                         currentAge = startingAge;
@@ -126,22 +193,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, obstacle) || Physics2D.OverlapCircle(targetCell.position + new Vector3(input.yInput, 0f, 0f), 0.25f, obstacle))
-    //    {
-    //        Gizmos.color = new Color32(255, 0, 0, 100);
-    //    }
-    //    else
-    //    Gizmos.color = new Color32(0, 255, 0, 100);
-    //    Gizmos.DrawCube(targetCell.position, new Vector3(0.5f, 0.5f));
-    //}
+    private void OnDrawGizmos()
+    {
+        if (Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, obstacle) || Physics2D.OverlapCircle(targetCell.position + new Vector3(input.yInput, 0f, 0f), 0.25f, obstacle))
+        {
+            Gizmos.color = new Color32(255, 0, 0, 100);
+        }
+        else
+            Gizmos.color = new Color32(0, 255, 0, 100);
+        Gizmos.DrawCube(targetCell.position, new Vector3(0.5f, 0.5f));
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Clock")
+        if (collision.tag == "Reducer")
         {
-            currentAge -= agingRate;
+            var reducer = collision.GetComponent<AgeModifier>();
+            currentAge -= reducer.ageModification;
+            ageCount.text = $"Age: {currentAge.ToString()}";
+            collision.gameObject.SetActive(false);
+        }
+        if (collision.tag == "Ager")
+        {
+            var reducer = collision.GetComponent<AgeModifier>();
+            currentAge += reducer.ageModification;
             ageCount.text = $"Age: {currentAge.ToString()}";
             collision.gameObject.SetActive(false);
         }

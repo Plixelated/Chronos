@@ -7,9 +7,13 @@ TagManager:
   - Swapper
   - Crumbler
   - Breaker
-  - Clock
   - Starter
   - Finisher
+  - Doubler
+  - Blocker
+  - OneWay
+  - Reducer
+  - Ager
   layers:
   - Default
   - TransparentFX
