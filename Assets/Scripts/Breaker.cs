@@ -5,7 +5,7 @@ using UnityEngine;
 public class Breaker : MonoBehaviour
 {
     public int NumberOfPasses;
-    public LayerMask playerMask;
+    public int startingPasses;
 
     public SpriteRenderer spriteRenderer;
 
@@ -14,7 +14,12 @@ public class Breaker : MonoBehaviour
 
     private void Start()
     {
-        
+        NumberOfPasses = startingPasses;
+    }
+
+    private void OnEnable()
+    {
+        NumberOfPasses = startingPasses;
     }
 
     public void Deactivate()
@@ -27,7 +32,6 @@ public class Breaker : MonoBehaviour
         if (NumberOfPasses == 1)
         {
             this.spriteRenderer.sprite = broken_sprite;
-            //this.GetComponent<SpriteRenderer>().color = new Color32(255, 93, 0, 255);
         }
     }
 

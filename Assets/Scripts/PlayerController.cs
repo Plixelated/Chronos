@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -27,10 +28,14 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI ageCount;
 
-    public bool up;
-    public bool down;
-    public bool left;
-    public bool right;
+    //public bool up;
+    //public bool down;
+    //public bool left;
+    //public bool right;
+
+    public static Action playerDied;
+
+    public Animator playerAnimator;
 
     private void OnEnable()
     {
@@ -62,43 +67,63 @@ public class PlayerController : MonoBehaviour
         var checkYObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput, 0f), 0.25f, obstacle);
         var checkYPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput, 0f), 0.25f, pathway);
 
-        if (input.xInput == -1)
-        {
-            left = true;
-            right = false;
-        }
-        if (input.xInput == 1)
-        {
-            right = true;
-            left = false;
-        }
-        if (input.xInput == 0)
-        {
-            right = false;
-            left = false;
-        }
+        playerAnimator.SetInteger("age", currentAge);
+        playerAnimator.SetInteger("x_axis", (int)input.xInput);
+        playerAnimator.SetInteger("y_axis", (int)input.yInput);
 
-        if (input.yInput == -1)
-        {
-            down = true;
-            up = false;
-        }
-        if (input.yInput == 1)
-        {
-            down = false;
-            up = true;
-        }
-        if (input.yInput == 0)
-        {
-            down = false;
-            up = false;
-        }
+        //if (input.xInput == -1)
+        //{
+        //    left = true;
+        //    right = false;
+        //}
+        //if (input.xInput == 1)
+        //{
+        //    right = true;
+        //    left = false;
+        //}
+        //if (input.xInput == 0)
+        //{
+        //    right = false;
+        //    left = false;
+        //}
+
+        //if (input.yInput == -1)
+        //{
+        //    down = true;
+        //    up = false;
+        //}
+        //if (input.yInput == 1)
+        //{
+        //    down = false;
+        //    up = true;
+        //}
+        //if (input.yInput == 0)
+        //{
+        //    down = false;
+        //    up = false;
+        //}
 
         if (Vector2.Distance(transform.position, targetCell.position) <= movementCheckThreshold)
         {
-
+            //X Axis
             if (Mathf.Abs(input.xInput) == 1)
             {
+
+                if (input.xInput == -1)
+                {
+                    Vector3 rotation = new Vector3(0f, 180f, 0f);
+                    Quaternion q = Quaternion.Euler(rotation);
+                    player.transform.rotation = q;
+                }
+                else if (input.xInput == 1)
+                {
+                    Vector3 rotation = new Vector3(0f, 0f, 0f);
+                    Quaternion q = Quaternion.Euler(rotation);
+                    player.transform.rotation = q;
+                }
+
+                playerAnimator.SetInteger("direction_x", (int)input.xInput);
+                playerAnimator.SetInteger("direction_y", 0);
 
                 if (!checkXObstacle && checkXPath)
                 {
@@ -109,7 +134,7 @@ public class PlayerController : MonoBehaviour
                     {
                         //if (checkXPath.tag != "OneWay")
                         //{
-                            targetCell.position += new Vector3(input.xInput, 0f, 0f);
+                        targetCell.position += new Vector3(input.xInput, 0f, 0f);
                         //}
                         //else if (checkXPath.tag == "OneWay")
                         //{
@@ -130,7 +155,9 @@ public class PlayerController : MonoBehaviour
                         //}
                     }
                     else
+                    {
                         targetCell.position += new Vector3(input.xInput * 2, 0f, 0f);
+                    }
 
                     if (checkXPath.tag == "Swapper")
                     {
@@ -153,19 +180,25 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-
+            //Y Axis
             if (Mathf.Abs(input.yInput) == 1)
             {
+                playerAnimator.SetInteger("direction_y", (int)input.yInput);
+                playerAnimator.SetInteger("direction_x", 0);
 
                 if (!checkYObstacle && checkYPath)
                 {
                     currentAge += agingRate;
                     ageCount.text = $"Age: {currentAge.ToString()}";
-                    
-                    if(checkYPath.tag != "Doubler") 
+
+                    if (checkYPath.tag != "Doubler")
+                    {
                         targetCell.position += new Vector3(0f, input.yInput, 0f);
+                    }
                     else
-                        targetCell.position += new Vector3(0f, input.yInput*2, 0f);
+                    {
+                        targetCell.position += new Vector3(0f, input.yInput * 2, 0f);
+                    }
 
                     if (checkYPath.tag == "Swapper")
                     {
@@ -191,6 +224,13 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    public void ReturnToIdle()
+    {
+        playerAnimator.SetInteger("y_axis", 0);
+        playerAnimator.SetInteger("x_axis", 0);
     }
 
     private void OnDrawGizmos()
@@ -230,6 +270,16 @@ public class PlayerController : MonoBehaviour
             if (breaker.NumberOfPasses == 0)
             {
                 breaker.Deactivate();
+            }
+        }
+
+        if (collision.tag == "Crumbler")
+        {
+
+            if (!Physics2D.OverlapCircle(this.transform.position, 0.25f, pathway))
+            {
+                if (playerDied != null)
+                    playerDied();
             }
         }
     }
