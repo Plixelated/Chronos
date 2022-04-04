@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     public static Action hasReset;
 
+    public GameObject fade;
+    public float resetDelay;
+
     private void OnEnable()
     {
         PlayerController.playerDied += ResetLevel;
@@ -25,18 +29,43 @@ public class GameManager : MonoBehaviour
     }
     public void ResetLevel()
     {
+        if (!fade.activeSelf)
+        {
+            fade.GetComponent<Animator>().SetBool("fade_in", false);
+            fade.SetActive(true);
+        }
 
         if (hasReset != null)
             hasReset();
 
-        player.currentAge = player.startingAge;
-        player.ageCount.text = $"Age: {player.currentAge.ToString()}";
-        ResetTiles();
-        pathManager.ResetPaths();
-        player.GetComponent<SpriteRenderer>().enabled = false;
+        StartCoroutine(ResetPause());
+    }
+
+    public void ResetObjects()
+    {
         player.transform.position = startingCoordinates;
         movementChecker.transform.position = startingCoordinates;
+
+        ResetTiles();
+        player.currentAge = player.startingAge;
+        player.ageCount.text = $"Age: {player.currentAge.ToString()}";
+        pathManager.ResetPaths();
+        player.GetComponent<SpriteRenderer>().enabled = false;
+
         player.GetComponent<SpriteRenderer>().enabled = true;
+        fade.GetComponent<Animator>().SetBool("fade_in", true);
+    }
+
+    public IEnumerator ResetPause()
+    {
+        yield return new WaitForSeconds(resetDelay);
+        ResetObjects();
+    }
+
+    public IEnumerator LevelTransition()
+    {
+        yield return new WaitForSeconds(resetDelay);
+        levelLoader.NextLevel();
     }
 
     public void ResetTiles()
@@ -48,10 +77,15 @@ public class GameManager : MonoBehaviour
 
             foreach (Transform child in paths)
             {
-                if (!child.gameObject.activeSelf)
-                {
+                //if (!child.gameObject.activeSelf)
+                //{
                     child.gameObject.SetActive(true);
-                }
+                    var crumbleTile = child.GetComponent<Crumble>();
+                    if (crumbleTile != null)
+                    {
+                        crumbleTile.resetting = true;
+                    }
+                //}
             }
         }
     
@@ -73,12 +107,19 @@ public class GameManager : MonoBehaviour
     {
         if (player.currentAge > pathManager.maxAge)
         {
+            player.input.xInput = 0;
+            player.input.yInput = 0;
             ResetLevel();
         }
 
         if (pathManager.levelCompleted)
         {
-            levelLoader.NextLevel();
+            if (!fade.activeSelf)
+            {
+                fade.GetComponent<Animator>().SetBool("fade_in", false);
+                fade.SetActive(true);
+            }
+            StartCoroutine(LevelTransition());
         }
     }
 }

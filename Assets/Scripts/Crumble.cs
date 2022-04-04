@@ -8,6 +8,7 @@ public class Crumble : MonoBehaviour
     public float timer;
     public Animator tileAnimator;
     public Transform initalScale;
+    public bool resetting;
 
     // Start is called before the first frame update
 
@@ -28,6 +29,7 @@ public class Crumble : MonoBehaviour
         timer = 0;
     }
 
+
     public void SetTimer()
     {
         if (timer == 0)
@@ -39,9 +41,9 @@ public class Crumble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.gameObject.activeSelf)
+        if (!resetting)
         {
-            if (this.timer > 0)
+            if (this.gameObject.activeSelf)
             {
                 if (this.timer > 0)
                 {
@@ -49,15 +51,24 @@ public class Crumble : MonoBehaviour
                     if (!tileAnimator.GetBool("shaking"))
                         tileAnimator.SetBool("shaking", true);
 
+                    if (this.timer <= 0.5f)
+                    {
+                        tileAnimator.SetBool("falling", true);
+                        tileAnimator.SetBool("shaking", false);
+                    }
+
                     if (this.timer <= 0)
                     {
                         this.timer = 0;
-                        tileAnimator.SetBool("falling", true);
-                        tileAnimator.SetBool("shaking", false);
-                        gameObject.SetActive(false);
+                        this.gameObject.SetActive(false);
                     }
                 }
             }
+        }
+        else
+        {
+            resetting = false;
+            timer = 0;
         }
     }
 

@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     public Animator playerAnimator;
 
+
     private void OnEnable()
     {
        
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         transform.position = Vector2.MoveTowards(transform.position, targetCell.position, movementSpeed * Time.deltaTime);
+
 
         var checkXObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, obstacle);
         var checkXPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, pathway);
