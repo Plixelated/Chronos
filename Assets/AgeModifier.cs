@@ -6,10 +6,14 @@ using UnityEngine;
 public class AgeModifier: MonoBehaviour
 {
     public int ageModification;
-    //public TextMeshProUGUI modificationText;
+    public TextMeshProUGUI modificationText;
+    public bool ager;
 
     private void Update()
     {
-        //this.modificationText.text = $"x{this.ageModification.ToString()}";
+        if (ager)
+        this.modificationText.text = $"+{this.ageModification.ToString()}";
+        else
+            this.modificationText.text = $"-{this.ageModification.ToString()}";
     }
 }

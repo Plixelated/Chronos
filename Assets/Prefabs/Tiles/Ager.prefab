@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: ager
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: ageModification
       value: 5
       objectReference: {fileID: 0}

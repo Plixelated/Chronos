@@ -27,15 +27,14 @@ public class PlayerController : MonoBehaviour
     public int agingRate;
 
     public TextMeshProUGUI ageCount;
-
-    //public bool up;
-    //public bool down;
-    //public bool left;
-    //public bool right;
+    public TextMeshProUGUI ageModifierNotification;
 
     public static Action playerDied;
 
     public Animator playerAnimator;
+
+    public float notificationTimer;
+    public float notificationlength;
 
 
     private void OnEnable()
@@ -129,8 +128,13 @@ public class PlayerController : MonoBehaviour
 
                 if (!checkXObstacle && checkXPath)
                 {
-                    currentAge += agingRate;
-                    ageCount.text = $"Age: {currentAge.ToString()}";
+                    //Not adding modified age
+                    if (checkXPath.tag != "Ager" || checkXPath.tag != "Reducer")
+                    {
+                        currentAge += agingRate;
+                        SetAgeNotification($"+{agingRate}");
+                        ageCount.text = $"Age: {currentAge.ToString()}";
+                    }
 
                     if (checkXPath.tag != "Doubler")
                     {
@@ -190,8 +194,13 @@ public class PlayerController : MonoBehaviour
 
                 if (!checkYObstacle && checkYPath)
                 {
-                    currentAge += agingRate;
-                    ageCount.text = $"Age: {currentAge.ToString()}";
+                    //Not adding modified age
+                    if (checkYPath.tag != "Ager" || checkYPath.tag != "Reducer")
+                    {
+                        currentAge += agingRate;
+                        SetAgeNotification($"+{agingRate}");
+                        ageCount.text = $"Age: {currentAge.ToString()}";
+                    }
 
                     if (checkYPath.tag != "Doubler")
                     {
@@ -227,6 +236,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (notificationTimer > 0)
+        {
+            notificationTimer -= Time.deltaTime;
+            if (notificationTimer <= 0)
+            {
+                notificationTimer = 0;
+                ageModifierNotification.gameObject.SetActive(false);
+            }
+        }
+
     }
 
     public void ReturnToIdle()
@@ -234,6 +253,17 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetInteger("y_axis", 0);
         playerAnimator.SetInteger("x_axis", 0);
     }
+
+    public void SetAgeNotification(string notif)
+    {
+        if (!ageModifierNotification.gameObject.activeSelf)
+        {
+            ageModifierNotification.gameObject.SetActive(true);
+            ageModifierNotification.text = notif;
+            notificationTimer = notificationlength;
+        }
+    }
+
 
     private void OnDrawGizmos()
     {
@@ -252,6 +282,7 @@ public class PlayerController : MonoBehaviour
         {
             var reducer = collision.GetComponent<AgeModifier>();
             currentAge -= reducer.ageModification;
+            SetAgeNotification($"-{reducer.ageModification}");
             ageCount.text = $"Age: {currentAge.ToString()}";
             collision.gameObject.SetActive(false);
         }
@@ -259,6 +290,7 @@ public class PlayerController : MonoBehaviour
         {
             var reducer = collision.GetComponent<AgeModifier>();
             currentAge += reducer.ageModification;
+            SetAgeNotification($"+{reducer.ageModification+5}");
             ageCount.text = $"Age: {currentAge.ToString()}";
             collision.gameObject.SetActive(false);
         }
