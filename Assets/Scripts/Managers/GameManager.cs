@@ -13,10 +13,10 @@ public class GameManager : MonoBehaviour
     public PlayerController player;
     public Vector3 startingCoordinates;
     public GameObject movementChecker;
-
+    public GameObject loadingScreen;
     public static Action hasReset;
 
-    public GameObject fade;
+    public Animator fade;
     public float resetDelay;
 
     private void OnEnable()
@@ -30,11 +30,8 @@ public class GameManager : MonoBehaviour
     }
     public void ResetLevel()
     {
-        if (!fade.activeSelf)
-        {
-            fade.GetComponent<Animator>().SetBool("fade_in", false);
-            fade.SetActive(true);
-        }
+        fade.SetBool("fade_in", false);
+        fade.SetBool("fade_out", true);
 
         if (hasReset != null)
             hasReset();
@@ -54,7 +51,8 @@ public class GameManager : MonoBehaviour
         player.GetComponent<SpriteRenderer>().enabled = false;
 
         player.GetComponent<SpriteRenderer>().enabled = true;
-        fade.GetComponent<Animator>().SetBool("fade_in", true);
+        fade.SetBool("fade_in", true);
+        fade.SetBool("fade_out", false);
     }
 
     public IEnumerator ResetPause()
@@ -100,7 +98,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (loadingScreen.activeSelf)
+        {
+            loadingScreen.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -115,11 +116,8 @@ public class GameManager : MonoBehaviour
 
         if (pathManager.levelCompleted)
         {
-            if (!fade.activeSelf)
-            {
-                fade.GetComponent<Animator>().SetBool("fade_in", false);
-                fade.SetActive(true);
-            }
+            fade.SetBool("fade_out", true);
+            fade.SetBool("fade_in", false);
             StartCoroutine(LevelTransition());
         }
     }
