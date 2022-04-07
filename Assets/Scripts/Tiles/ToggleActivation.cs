@@ -12,7 +12,7 @@ public class ToggleActivation : MonoBehaviour
 
     public void Deactivate()
     {
-        this.GetComponentInParent<Crumble>().gameObject.SetActive(false);
+        this.GetComponentInParent<CrumbleTile>().gameObject.SetActive(false);
     }
 
     public void ToggleSprite()

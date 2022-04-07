@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
     public Vector3 startingCoordinates;
     public GameObject movementChecker;
     public GameObject loadingScreen;
-    public static Action hasReset;
+    public AgeManager ageManager;
+
+    public static Action<bool> resetting;
 
     public Animator fade;
     public float resetDelay;
@@ -33,10 +35,10 @@ public class GameManager : MonoBehaviour
         fade.SetBool("fade_in", false);
         fade.SetBool("fade_out", true);
 
-        if (hasReset != null)
-            hasReset();
+        //if (hasReset != null)
+        //    hasReset();
 
-        StartCoroutine(ResetPause());
+        StartCoroutine(ResetDelay());
     }
 
     public void ResetObjects()
@@ -45,8 +47,7 @@ public class GameManager : MonoBehaviour
         movementChecker.transform.position = startingCoordinates;
 
         ResetTiles();
-        player.currentAge = player.startingAge;
-        player.ageCount.text = $"Age: {player.currentAge.ToString()}";
+        ageManager.ResetAge();
         pathManager.ResetPaths();
         player.GetComponent<SpriteRenderer>().enabled = false;
 
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
         fade.SetBool("fade_out", false);
     }
 
-    public IEnumerator ResetPause()
+    public IEnumerator ResetDelay()
     {
         yield return new WaitForSeconds(resetDelay);
         ResetObjects();
@@ -76,15 +77,12 @@ public class GameManager : MonoBehaviour
 
             foreach (Transform child in paths)
             {
-                //if (!child.gameObject.activeSelf)
-                //{
                     child.gameObject.SetActive(true);
-                    var crumbleTile = child.GetComponent<Crumble>();
-                    if (crumbleTile != null)
-                    {
-                        crumbleTile.resetting = true;
-                    }
-                //}
+                var crumbleTile = child.GetComponent<CrumbleTile>();
+                if (crumbleTile != null)
+                {
+                    crumbleTile.resetting = true;
+                }
             }
         }
     
@@ -107,7 +105,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.currentAge > pathManager.maxAge)
+        if (player.currentAge >= pathManager.maxAge)
         {
             player.input.xInput = 0;
             player.input.yInput = 0;

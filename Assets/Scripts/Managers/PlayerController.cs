@@ -23,21 +23,16 @@ public class PlayerController : MonoBehaviour
     public PathManager pathManager;
 
     public int currentAge;
-    public int startingAge;
-    public int agingRate;
+    //public int startingAge;
+    //public int agingRate;
 
 
     public static Action playerDied;
+    public static Action<string> tileType;
+    public static Action<Collider2D> currentTile; 
+    public static Action<int, string>modifiedAge;
 
     public Animator playerAnimator;
-
-    //Move to UI Manager
-
-    public float notificationTimer;
-    public float notificationlength;
-
-    public TextMeshProUGUI ageCount;
-    public TextMeshProUGUI ageModifierNotification;
 
     Collider2D checkXPath;
     Collider2D checkYPath;
@@ -46,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-
+        AgeManager.Age += GetCurrentAge;
     }
 
     /// <summary>
@@ -61,7 +56,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        AgeManager.Age -= GetCurrentAge;
+    }
 
+    public void GetCurrentAge(int age)
+    {
+        currentAge = age;
     }
 
     public void CheckPath()
@@ -133,13 +133,15 @@ public class PlayerController : MonoBehaviour
 
     public string CheckTileType(Collider2D tile)
     {
+        Broadcaster.Send(currentTile, tile);
         return tile.tag;
     }
 
     public void ExecuteTileEffect(Collider2D path, float inputx, float inputy)
     {
-        if (CheckTileType(path) != "Ager" || CheckTileType(path) != "Reducer")
-            SetAge(agingRate);
+        //if (CheckTileType(path) != "Ager" || CheckTileType(path) != "Reducer")
+        //SetAge(agingRate);
+
 
         if (CheckTileType(path) == "Doubler")
         {
@@ -148,27 +150,27 @@ public class PlayerController : MonoBehaviour
         else
             ValidateTile(inputx, inputy, 1f);
 
-        if (CheckTileType(path) == "Swapper")
-        {
-            currentAge = startingAge;
-            ageCount.text = $"Age: {currentAge.ToString()}";
-            pathManager.ChangePath(path.gameObject.GetComponent<Swapper>().PathID);
-        }
+        //if (CheckTileType(path) == "Swapper")
+        //{
+        //    currentAge = startingAge;
+        //    ageCount.text = $"Age: {currentAge.ToString()}";
+        //    pathManager.ChangePath(path.gameObject.GetComponent<Swapper>().PathID);
+        //}
 
-        if (CheckTileType(path) == "Crumbler")
-        {
-            path.gameObject.GetComponent<Crumble>().SetTimer();
-        }
+        //if (CheckTileType(path) == "Crumbler")
+        //{
+        //    path.gameObject.GetComponent<CrumbleTile>().SetTimer();
+        //}
 
         if (CheckTileType(path) == "Breaker")
         {
             path.gameObject.GetComponent<Breaker>().NumberOfPasses--;
         }
 
-        if (CheckTileType(path) == "Finisher")
-        {
-            pathManager.levelCompleted = true;
-        }
+        //if (CheckTileType(path) == "Finisher")
+        //{
+        //    pathManager.levelCompleted = true;
+        //}
     }
 
     public void ValidateMovement()
@@ -181,7 +183,9 @@ public class PlayerController : MonoBehaviour
                 XAxisAnimations();
                 if (!checkXObstacle && checkXPath)
                 {
-                    ExecuteTileEffect(checkXPath, input.xInput, 0f);
+                    CheckTileType(checkXPath);
+                    ValidateTile(input.xInput, 0f, 1f);
+                    //ExecuteTileEffect(checkXPath, input.xInput, 0f);
                 }
             }
             if (ValidateInput(input.yInput) == 1)
@@ -189,34 +193,15 @@ public class PlayerController : MonoBehaviour
                 YAxisAnimations();
                 if (!checkYObstacle && checkYPath)
                 {
-                    ExecuteTileEffect(checkYPath, 0f, input.yInput);
+                    CheckTileType(checkYPath);
+                    ValidateTile(0f, input.yInput, 1f);
+                    //ExecuteTileEffect(checkYPath, 0f, input.yInput);
                 }
             }
         }
     }
 
-    //Move To Age Manager
 
-    public void SetAge(int age)
-    {
-        currentAge += age;
-        SetAgeNotification($"+{age}");
-        ageCount.text = $"Age: {currentAge.ToString()}";
-    }
-
-    public void ResetAge()
-    {
-        currentAge = startingAge;
-        ageCount.text = $"Age: {currentAge.ToString()}";
-    }
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        currentAge = startingAge;
-    }
 
     // Update is called once per frame
     void Update()
@@ -227,17 +212,6 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         SetAnimatorValues();
         ValidateMovement();
-
-        if (notificationTimer > 0)
-        {
-            notificationTimer -= Time.deltaTime;
-            if (notificationTimer <= 0)
-            {
-                notificationTimer = 0;
-                ageModifierNotification.gameObject.SetActive(false);
-            }
-        }
-
     }
 
     public void ReturnToIdle()
@@ -246,15 +220,6 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetInteger("x_axis", 0);
     }
 
-    public void SetAgeNotification(string notif)
-    {
-        if (!ageModifierNotification.gameObject.activeSelf)
-        {
-            ageModifierNotification.gameObject.SetActive(true);
-            ageModifierNotification.text = notif;
-            notificationTimer = notificationlength;
-        }
-    }
 
 
     private void OnDrawGizmos()
@@ -270,20 +235,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Reducer")
+        if (collision.tag == "Reducer" || collision.tag == "Ager")
         {
-            var reducer = collision.GetComponent<AgeModifier>();
-            currentAge -= reducer.ageModification;
-            SetAgeNotification($"-{reducer.ageModification}");
-            ageCount.text = $"Age: {currentAge.ToString()}";
-            collision.gameObject.SetActive(false);
-        }
-        if (collision.tag == "Ager")
-        {
-            var reducer = collision.GetComponent<AgeModifier>();
-            currentAge += reducer.ageModification;
-            SetAgeNotification($"+{reducer.ageModification+5}");
-            ageCount.text = $"Age: {currentAge.ToString()}";
+            var modifier = collision.GetComponent<AgeModifier>();
+            Broadcaster.Send(modifiedAge, modifier.ageModification, collision.tag);
             collision.gameObject.SetActive(false);
         }
     }

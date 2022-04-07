@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Crumble : MonoBehaviour
+public class CrumbleTile : Tile
 {
     public float crumbleTimer;
     public float timer;
@@ -12,36 +12,48 @@ public class Crumble : MonoBehaviour
 
     // Start is called before the first frame update
 
-    private void OnEnable()
+    protected override void Effect()
     {
-        GameManager.hasReset += ResetAnimations;
+        this.SetTimer();
     }
 
-    private void OnDisable()
+    public void GetResetStatus(bool status)
     {
-        GameManager.hasReset -= ResetAnimations;
+        this.resetting = status;
+        Debug.Log("Resetting Recieved");
     }
 
     private void ResetAnimations()
     {
-        tileAnimator.SetBool("falling", false);
+        if (!resetting)
+        {
+            if (tileAnimator.GetBool("falling"))
+                tileAnimator.SetBool("falling", false);
+            if (tileAnimator.GetBool("shaking"))
+                tileAnimator.SetBool("shaking", false);
+        }
+    }
+
+    private void ChangeAnimationState()
+    {
+        tileAnimator.SetBool("falling", true);
         tileAnimator.SetBool("shaking", false);
-        timer = 0;
     }
 
 
     public void SetTimer()
     {
-        if (timer == 0)
+        if (this.timer == 0)
         {
             this.timer = this.crumbleTimer;
+            Debug.Log(this.name + " has Activated");
         }
     }
     
     // Update is called once per frame
     void Update()
     {
-        if (!resetting)
+        if (!this.resetting)
         {
             if (this.gameObject.activeSelf)
             {
@@ -53,8 +65,7 @@ public class Crumble : MonoBehaviour
 
                     if (this.timer <= 0.5f)
                     {
-                        tileAnimator.SetBool("falling", true);
-                        tileAnimator.SetBool("shaking", false);
+                        ChangeAnimationState();
                     }
 
                     if (this.timer <= 0)
@@ -67,8 +78,8 @@ public class Crumble : MonoBehaviour
         }
         else
         {
-            resetting = false;
-            timer = 0;
+            this.resetting = false;
+            this.timer = 0;
         }
     }
 

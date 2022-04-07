@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class AgeModifier: MonoBehaviour
+public class AgeModifier: Tile
 {
     public int ageModification;
     public TextMeshProUGUI modificationText;
@@ -16,4 +16,5 @@ public class AgeModifier: MonoBehaviour
         else
             this.modificationText.text = $"-{this.ageModification.ToString()}";
     }
+
 }
