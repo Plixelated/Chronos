@@ -13,6 +13,11 @@ public class ySorter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ySort();
+    }
+
+    private void ySort()
+    {
         if (!child)
         {
             this.y_pos = Mathf.FloorToInt(this.transform.position.y);

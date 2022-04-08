@@ -47,4 +47,6 @@ public abstract class Tile : MonoBehaviour
     protected virtual void OnExit() { }
 
     public virtual void Effect() { }
+
+    public virtual void OnReset() { }
 }

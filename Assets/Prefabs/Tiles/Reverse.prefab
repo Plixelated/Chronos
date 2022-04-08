@@ -277,8 +277,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 94971d5977f1ec3428a5888255deb549, type: 2}
-  m_sharedMaterial: {fileID: -5497694307459687853, guid: 94971d5977f1ec3428a5888255deb549, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 04175749cb6ea61409ee521da59dc836, type: 2}
+  m_sharedMaterial: {fileID: -6857236144565894722, guid: 04175749cb6ea61409ee521da59dc836, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -308,11 +308,11 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -7.31
+  m_characterSpacing: -20
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -406,5 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c59e1ec486b814f86df6c0572818c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathManager: {fileID: 0}
+  currentTile: {fileID: 0}
+  previousTile: {fileID: 0}
   ageModification: 5
   modificationText: {fileID: 4473348482870623906}
+  ager: 0

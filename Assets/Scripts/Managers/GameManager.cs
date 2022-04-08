@@ -79,14 +79,21 @@ public class GameManager : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
                 var crumbleTile = child.GetComponent<CrumbleTile>();
+                var breakingTile = child.GetComponent<BreakingTile>();
+                var oneWayTile = child.GetComponent<OneWayTile>();
                 if (crumbleTile != null)
                 {
-                    crumbleTile.resetting = true;
+                    crumbleTile.OnReset();
                 }
-                var breakingTile = child.GetComponent<BreakingTile>();
+
                 if (breakingTile != null)
                 {
-                    breakingTile.currentPasses = 0;
+                    breakingTile.OnReset();
+                }
+
+                if (oneWayTile != null)
+                { 
+                    oneWayTile.OnReset();
                 }
             }
         }

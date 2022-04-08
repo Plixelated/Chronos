@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         AgeManager.Age += GetCurrentAge;
         FreeMovementTile.modifier += GetMovementModifier;
-        FreeMovementTile.resetModifier += ResetMovementModifier;
+        //FreeMovementTile.resetModifier += ResetMovementModifier;
     }
 
     /// <summary>
@@ -71,13 +71,13 @@ public class PlayerController : MonoBehaviour
 
     public void GetMovementModifier(int modifier)
     {
-        movementModifier += modifier;
-    }
-
-    public void ResetMovementModifier(int modifier)
-    {
         movementModifier = modifier;
     }
+
+    //public void ResetMovementModifier(int modifier)
+    //{
+    //    movementModifier = modifier;
+    //}
 
     public void CheckPath()
     {
@@ -112,18 +112,50 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ValidateTile(float xInput, float yInput)
+    public void MoveValidator(float xInput, float yInput)
     {
-        var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
-        if (movementModifier > 1 && yInput != 0)
-            landingTile.GetComponent<Tile>().Effect();
 
-        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
-        if (movementModifier > 1 && xInput != 0)
-            landingTile.GetComponent<Tile>().Effect();
+        if (movementModifier > 0 && yInput != 0)
+        {
+            var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
+            if (landingTile)
+            {
+                targetCell.position += new Vector3(xInput, yInput * movementModifier, 0f);
+
+                CheckTileType(landingTile);
+                //var tileEffect = landingTile.GetComponent<Tile>();
+                //if (tileEffect != null)
+                //    landingTile.GetComponent<Tile>().Effect();
+            }
+            else
+                targetCell.position += new Vector3(xInput, yInput, 0f);
+        }
 
 
-        targetCell.position += new Vector3(xInput * movementModifier, yInput * movementModifier, 0f);
+        if (movementModifier > 0 && xInput != 0)
+        {
+            var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
+            if (landingTile)
+            {
+                targetCell.position += new Vector3(xInput * movementModifier, yInput, 0f);
+
+                CheckTileType(landingTile);
+                //var tileEffect = landingTile.GetComponent<Tile>();
+                //if (tileEffect != null)
+                //    landingTile.GetComponent<Tile>().Effect();
+            }
+            else
+                targetCell.position += new Vector3(xInput, yInput, 0f);
+        }
+
+        if (movementModifier == 0)
+        {
+            targetCell.position += new Vector3(xInput, yInput, 0f);
+        }
+
+        if (movementModifier > 0)
+            movementModifier = 0;   
+            
     }
 
     public void MovePlayer()
@@ -170,20 +202,24 @@ public class PlayerController : MonoBehaviour
             {
                 FlipSprite(input.xInput);
                 XAxisAnimations();
-                if (!checkXObstacle && checkXPath)
+                if (/*!checkXObstacle && */checkXPath)
                 {
                     CheckTileType(checkXPath);
-                    ValidateTile(input.xInput, 0f);
+                    MoveValidator(input.xInput, 0f);
                 }
+                //else
+                //    Debug.Log("Unable to Move");
             }
             if (ValidateInput(input.yInput) == 1)
             {
                 YAxisAnimations();
-                if (!checkYObstacle && checkYPath)
+                if (/*!checkYObstacle && */checkYPath)
                 {
                     CheckTileType(checkYPath);
-                    ValidateTile(0f, input.yInput);
+                    MoveValidator(0f, input.yInput);
                 }
+                //else
+                //    Debug.Log("Unable to Move");
             }
         }
     }

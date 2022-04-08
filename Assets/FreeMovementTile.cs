@@ -7,15 +7,15 @@ public class FreeMovementTile : Tile
 {
     public int movementModifier;
     public static Action<int> modifier;
-    public static Action<int> resetModifier;
+    //public static Action<int> resetModifier;
 
     public override void Effect()
     {
         Broadcaster.Send(modifier, movementModifier);
     }
 
-    protected override void OnExit()
-    {
-        Broadcaster.Send(resetModifier, 1);
-    }
+    //protected override void OnExit()
+    //{
+    //    Broadcaster.Send(resetModifier, 1);
+    //}
 }

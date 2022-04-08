@@ -32,6 +32,11 @@ public class BreakingTile : Tile
 
     }
 
+    public override void OnReset()
+    {
+        currentPasses = 0;
+    }
+
     protected override void OnExit()
     {
         if (currentPasses >= maxPasses)

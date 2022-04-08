@@ -17,10 +17,9 @@ public class CrumbleTile : Tile
         this.SetTimer();
     }
 
-    public void GetResetStatus(bool status)
+    public override void OnReset()
     {
-        this.resetting = status;
-        Debug.Log("Resetting Recieved");
+        this.resetting = false;
     }
 
     private void ResetAnimations()
