@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -935916223
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 7516f90ce138da0498379770e72284be, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 648f7656e9b6a5e4bb1cba78e1a4962b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -125,11 +125,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b58afd8a2027ad4aba8a30938b2df33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumberOfPasses: 2
-  startingPasses: 0
+  pathManager: {fileID: 0}
+  maxPasses: 2
+  currentPasses: 0
   spriteRenderer: {fileID: 3881047264433110984}
-  default_sprite: {fileID: 21300000, guid: 7516f90ce138da0498379770e72284be, type: 3}
-  broken_sprite: {fileID: 21300000, guid: cd71bae87ac231b4c92b7d35c384dd80, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: 648f7656e9b6a5e4bb1cba78e1a4962b, type: 3}
+  - {fileID: 21300000, guid: caa25c3bbb2cef349aa3392d4b1e2e52, type: 3}
+  - {fileID: 21300000, guid: 179e39dbf2e915741ae694d084b6f647, type: 3}
 --- !u!114 &-1792368046377583278
 MonoBehaviour:
   m_ObjectHideFlags: 0

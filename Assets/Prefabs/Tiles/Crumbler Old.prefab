@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3323829511812306662, guid: 01bbce959ad58db4288689d1c63c9d03, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 179e39dbf2e915741ae694d084b6f647, type: 3}
+      objectReference: {fileID: 21300000, guid: f2a0b60ae95e48640bdeec5c94ee255c, type: 3}
     - target: {fileID: 3323829513094634800, guid: 01bbce959ad58db4288689d1c63c9d03, type: 3}
       propertyPath: m_Name
       value: Crumbler Old

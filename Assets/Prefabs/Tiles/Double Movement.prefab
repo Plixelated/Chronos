@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4952113364984330171}
   - component: {fileID: 4952113364984330170}
   - component: {fileID: 1352210758460761104}
+  - component: {fileID: 9063339655533090967}
   m_Layer: 7
   m_Name: Double Movement
   m_TagString: Doubler
@@ -127,3 +128,19 @@ MonoBehaviour:
   y_pos: 0
   y_sort: 0
   child: 0
+--- !u!114 &9063339655533090967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4952113364984330173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1eb9e4282e37e40acfe446e5ca721e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathManager: {fileID: 0}
+  currentTile: {fileID: 0}
+  previousTile: {fileID: 0}
+  movementModifier: 2

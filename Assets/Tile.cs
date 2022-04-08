@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class Tile : MonoBehaviour
 {
     public PathManager pathManager;
+    public Collider2D currentTile;
+    public Collider2D previousTile;
  
 
     protected virtual void OnEnable()
@@ -27,16 +29,22 @@ public abstract class Tile : MonoBehaviour
 
     private void GetCurrentTile(Collider2D tile)
     {
+        previousTile = currentTile;
+        currentTile = tile;
         var activeTile = this.GetComponent<Collider2D>();
 
         if (tile == activeTile)
         {
             Effect();
         }
+        if (previousTile == activeTile)
+        {
+            OnExit();
+        }
+
     }
 
-    protected virtual void Effect()
-    {
+    protected virtual void OnExit() { }
 
-    }
+    public virtual void Effect() { }
 }

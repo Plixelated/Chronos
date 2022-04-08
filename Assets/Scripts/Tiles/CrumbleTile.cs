@@ -12,7 +12,7 @@ public class CrumbleTile : Tile
 
     // Start is called before the first frame update
 
-    protected override void Effect()
+    public override void Effect()
     {
         this.SetTimer();
     }

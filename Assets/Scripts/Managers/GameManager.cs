@@ -77,16 +77,41 @@ public class GameManager : MonoBehaviour
 
             foreach (Transform child in paths)
             {
-                    child.gameObject.SetActive(true);
+                child.gameObject.SetActive(true);
                 var crumbleTile = child.GetComponent<CrumbleTile>();
                 if (crumbleTile != null)
                 {
                     crumbleTile.resetting = true;
                 }
+                var breakingTile = child.GetComponent<BreakingTile>();
+                if (breakingTile != null)
+                {
+                    breakingTile.currentPasses = 0;
+                }
             }
         }
     
 
+    }
+
+    private void CheckPlayerAge()
+    {
+        if (player.currentAge >= pathManager.maxAge)
+        {
+            player.input.xInput = 0;
+            player.input.yInput = 0;
+            ResetLevel();
+        }
+    }
+
+    private void LevelCompletion()
+    {
+        if (pathManager.levelCompleted)
+        {
+            fade.SetBool("fade_out", true);
+            fade.SetBool("fade_in", false);
+            StartCoroutine(LevelTransition());
+        }
     }
 
     private void Awake()
@@ -105,18 +130,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.currentAge >= pathManager.maxAge)
-        {
-            player.input.xInput = 0;
-            player.input.yInput = 0;
-            ResetLevel();
-        }
-
-        if (pathManager.levelCompleted)
-        {
-            fade.SetBool("fade_out", true);
-            fade.SetBool("fade_in", false);
-            StartCoroutine(LevelTransition());
-        }
+        CheckPlayerAge();
+        LevelCompletion();
     }
 }

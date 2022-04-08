@@ -59,5 +59,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Double Up
       objectReference: {fileID: 0}
+    - target: {fileID: 9063339655533090967, guid: 02329abc80053fb46811a1c81ace75fa, type: 3}
+      propertyPath: movementModifier
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02329abc80053fb46811a1c81ace75fa, type: 3}

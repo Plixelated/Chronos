@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FinisherTile : Tile
 {
-    protected override void Effect()
+    public override void Effect()
     {
         pathManager.levelCompleted = true;
     }

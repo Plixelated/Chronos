@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     public float movementSpeed;
 
+    public int movementModifier;
+
     public float movementCheckThreshold;
 
     public LayerMask obstacle;
@@ -42,6 +44,8 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         AgeManager.Age += GetCurrentAge;
+        FreeMovementTile.modifier += GetMovementModifier;
+        FreeMovementTile.resetModifier += ResetMovementModifier;
     }
 
     /// <summary>
@@ -57,11 +61,22 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         AgeManager.Age -= GetCurrentAge;
+        FreeMovementTile.modifier -= GetMovementModifier;
     }
 
     public void GetCurrentAge(int age)
     {
         currentAge = age;
+    }
+
+    public void GetMovementModifier(int modifier)
+    {
+        movementModifier += modifier;
+    }
+
+    public void ResetMovementModifier(int modifier)
+    {
+        movementModifier = modifier;
     }
 
     public void CheckPath()
@@ -97,8 +112,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ValidateTile(float xInput, float yInput, float movementModifier)
+    public void ValidateTile(float xInput, float yInput)
     {
+        var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
+        if (movementModifier > 1 && yInput != 0)
+            landingTile.GetComponent<Tile>().Effect();
+
+        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
+        if (movementModifier > 1 && xInput != 0)
+            landingTile.GetComponent<Tile>().Effect();
+
+
         targetCell.position += new Vector3(xInput * movementModifier, yInput * movementModifier, 0f);
     }
 
@@ -137,41 +161,6 @@ public class PlayerController : MonoBehaviour
         return tile.tag;
     }
 
-    public void ExecuteTileEffect(Collider2D path, float inputx, float inputy)
-    {
-        //if (CheckTileType(path) != "Ager" || CheckTileType(path) != "Reducer")
-        //SetAge(agingRate);
-
-
-        if (CheckTileType(path) == "Doubler")
-        {
-            ValidateTile(inputx, inputy, 2f);
-        }
-        else
-            ValidateTile(inputx, inputy, 1f);
-
-        //if (CheckTileType(path) == "Swapper")
-        //{
-        //    currentAge = startingAge;
-        //    ageCount.text = $"Age: {currentAge.ToString()}";
-        //    pathManager.ChangePath(path.gameObject.GetComponent<Swapper>().PathID);
-        //}
-
-        //if (CheckTileType(path) == "Crumbler")
-        //{
-        //    path.gameObject.GetComponent<CrumbleTile>().SetTimer();
-        //}
-
-        if (CheckTileType(path) == "Breaker")
-        {
-            path.gameObject.GetComponent<Breaker>().NumberOfPasses--;
-        }
-
-        //if (CheckTileType(path) == "Finisher")
-        //{
-        //    pathManager.levelCompleted = true;
-        //}
-    }
 
     public void ValidateMovement()
     {
@@ -184,8 +173,7 @@ public class PlayerController : MonoBehaviour
                 if (!checkXObstacle && checkXPath)
                 {
                     CheckTileType(checkXPath);
-                    ValidateTile(input.xInput, 0f, 1f);
-                    //ExecuteTileEffect(checkXPath, input.xInput, 0f);
+                    ValidateTile(input.xInput, 0f);
                 }
             }
             if (ValidateInput(input.yInput) == 1)
@@ -194,8 +182,7 @@ public class PlayerController : MonoBehaviour
                 if (!checkYObstacle && checkYPath)
                 {
                     CheckTileType(checkYPath);
-                    ValidateTile(0f, input.yInput, 1f);
-                    //ExecuteTileEffect(checkYPath, 0f, input.yInput);
+                    ValidateTile(0f, input.yInput);
                 }
             }
         }
@@ -209,9 +196,10 @@ public class PlayerController : MonoBehaviour
 
         CheckPath();
         CheckForObstacle();
-        MovePlayer();
+        //MovePlayer();
         SetAnimatorValues();
         ValidateMovement();
+        MovePlayer();
     }
 
     public void ReturnToIdle()
@@ -245,22 +233,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Breaker")
-        {
-            var breaker = collision.GetComponent<Breaker>();
-            if (breaker.NumberOfPasses == 0)
-            {
-                breaker.Deactivate();
-            }
-        }
 
         if (collision.tag == "Crumbler")
         {
 
             if (!Physics2D.OverlapCircle(this.transform.position, 0.25f, pathway))
             {
-                if (playerDied != null)
-                    playerDied();
+                Broadcaster.Send(playerDied);
             }
         }
     }

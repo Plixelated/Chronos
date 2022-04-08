@@ -8,7 +8,7 @@ public class Swapper : Tile
     public int PathID;
     public static Action resetAgeRequest;
 
-    protected override void Effect()
+    public override void Effect()
     {
         Broadcaster.Send(resetAgeRequest);
         pathManager.ChangePath(PathID);

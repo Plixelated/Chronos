@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 648f7656e9b6a5e4bb1cba78e1a4962b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cd71bae87ac231b4c92b7d35c384dd80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -206,7 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db72926fd6acb6340a487aba3afd281b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathManager: {fileID: 0}
   crumbleTimer: 1
   timer: 0
   tileAnimator: {fileID: 3323829511812306663}
   initalScale: {fileID: 0}
+  resetting: 0
