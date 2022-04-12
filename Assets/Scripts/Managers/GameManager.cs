@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour
                 var crumbleTile = child.GetComponent<CrumbleTile>();
                 var breakingTile = child.GetComponent<BreakingTile>();
                 var oneWayTile = child.GetComponent<OneWayTile>();
+                var agingTile = child.GetComponent<AgeModifier>();
+
                 if (crumbleTile != null)
                 {
                     crumbleTile.OnReset();
@@ -94,6 +96,11 @@ public class GameManager : MonoBehaviour
                 if (oneWayTile != null)
                 { 
                     oneWayTile.OnReset();
+                }
+
+                if (agingTile != null)
+                { 
+                    agingTile.OnReset();
                 }
             }
         }

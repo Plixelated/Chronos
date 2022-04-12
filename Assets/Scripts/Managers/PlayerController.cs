@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public static Action playerDied;
     public static Action<string> tileType;
     public static Action<Collider2D> currentTile; 
-    public static Action<int, string>modifiedAge;
+    //public static Action<int, string>modifiedAge;
 
     public Animator playerAnimator;
 
@@ -114,48 +114,50 @@ public class PlayerController : MonoBehaviour
 
     public void MoveValidator(float xInput, float yInput)
     {
-
-        if (movementModifier > 0 && yInput != 0)
-        {
-            var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
-            if (landingTile)
-            {
-                targetCell.position += new Vector3(xInput, yInput * movementModifier, 0f);
-
-                CheckTileType(landingTile);
-                //var tileEffect = landingTile.GetComponent<Tile>();
-                //if (tileEffect != null)
-                //    landingTile.GetComponent<Tile>().Effect();
-            }
-            else
-                targetCell.position += new Vector3(xInput, yInput, 0f);
-        }
-
-
-        if (movementModifier > 0 && xInput != 0)
-        {
-            var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
-            if (landingTile)
-            {
-                targetCell.position += new Vector3(xInput * movementModifier, yInput, 0f);
-
-                CheckTileType(landingTile);
-                //var tileEffect = landingTile.GetComponent<Tile>();
-                //if (tileEffect != null)
-                //    landingTile.GetComponent<Tile>().Effect();
-            }
-            else
-                targetCell.position += new Vector3(xInput, yInput, 0f);
-        }
-
-        if (movementModifier == 0)
+        if (movementModifier == 1)
         {
             targetCell.position += new Vector3(xInput, yInput, 0f);
         }
+        else if (movementModifier > 1)
+        {
+            Debug.Log(movementModifier);
+            if (yInput != 0)
+            {
+                var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
+                if (landingTile)
+                {
+                    while (landingTile.tag == "Doubler")
+                    {
+                        movementModifier++;
+                        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
+                    }
 
-        if (movementModifier > 0)
-            movementModifier = 0;   
-            
+                    if (landingTile)
+                    {
+                        targetCell.position += new Vector3(xInput, yInput * movementModifier, 0f);
+                        CheckTileType(landingTile);
+                    }
+                }
+            }
+            if (xInput != 0)
+            {
+                var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
+                if (landingTile)
+                {
+                    while (landingTile.tag == "Doubler")
+                    {
+                        movementModifier++;
+                        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
+                    }
+
+                    if (landingTile)
+                    {
+                        targetCell.position += new Vector3(xInput * movementModifier, yInput, 0f);
+                        CheckTileType(landingTile);
+                    }
+                }
+            }
+        }
     }
 
     public void MovePlayer()
@@ -255,16 +257,6 @@ public class PlayerController : MonoBehaviour
         else
             Gizmos.color = new Color32(0, 255, 0, 100);
         Gizmos.DrawCube(targetCell.position, new Vector3(0.5f, 0.5f));
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Reducer" || collision.tag == "Ager")
-        {
-            var modifier = collision.GetComponent<AgeModifier>();
-            Broadcaster.Send(modifiedAge, modifier.ageModification, collision.tag);
-            collision.gameObject.SetActive(false);
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

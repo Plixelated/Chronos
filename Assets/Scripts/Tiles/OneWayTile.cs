@@ -64,6 +64,10 @@ public class OneWayTile : Tile
     private void Start()
     {
         SetDirection();
+        if (input == null)
+        { 
+            input = FindObjectOfType<InputMonitor>();
+        }
     }
 
     private void ResetDirections()

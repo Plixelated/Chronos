@@ -21,7 +21,7 @@ public class AgeManager : MonoBehaviour
     private void OnEnable()
     {
         PlayerController.currentTile += CheckAgeModification;
-        PlayerController.modifiedAge += GetAgeModification;
+        AgeModifier.modifiedAge += GetAgeModification;
         Swapper.resetAgeRequest += ResetAge;
     }
 
@@ -29,6 +29,8 @@ public class AgeManager : MonoBehaviour
     private void OnDisable()
     {
         PlayerController.currentTile -= CheckAgeModification;
+        AgeModifier.modifiedAge -= GetAgeModification;
+        Swapper.resetAgeRequest -= ResetAge;
     }
 
     public void GetAgeModification(int ageModification, string tile)

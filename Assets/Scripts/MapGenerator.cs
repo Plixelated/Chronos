@@ -1,32 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour
 {
-    public Texture2D map;
+    //public Texture2D maps;
+    public List<Texture2D> maps;
 
     public ColorToPrefab[] colorMapping;
+
+    public PathManager pathManager;
+
+    public Vector2 startingSpawnLocation;
+
+    public List<GameObject> generatedLevels;
+
+    public static Action showDirectionWindow;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     public void GenerateLevel()
     {
-        for (int x = 0; x < map.width; x++)
+        for (int i = 0; i < maps.Count; i++)
         {
-            for (int y = 0; y < map.height; y++)
+            GameObject parent = new GameObject($"Path {i+1}");
+            parent.transform.position = Vector2.zero;
+
+            for (int x = 0; x < maps[i].width; x++)
             {
-                GenerateTile(x,y);
+                for (int y = 0; y < maps[i].height; y++)
+                {
+                    GenerateTile(x, y, i, parent);
+                }
             }
+
+            parent.transform.position = startingSpawnLocation;
+            pathManager.pathways.Add(parent);
         }
     }
 
-    public void GenerateTile(int x, int y) 
+    public void GenerateTile(int x, int y, int counter, GameObject parent) 
     { 
-        Color pixelColor = map.GetPixel(x, y);
+        Color pixelColor = maps[counter].GetPixel(x, y);
 
         if (pixelColor.a == 0)
         {
@@ -34,17 +55,44 @@ public class MapGenerator : MonoBehaviour
             return;
         }
 
+        
+
         foreach (ColorToPrefab colorMapping in colorMapping)
         {
-            if (colorMapping.color.Equals(pixelColor))
+            if (VerifyColor(colorMapping.color, pixelColor))
             {
                 Vector2 position  = new Vector2(x, y);
 
-                Instantiate(colorMapping.prefab, position, Quaternion.identity, transform);
+                var tile = Instantiate<GameObject>(colorMapping.prefab, position, Quaternion.identity, parent.transform);
 
+                var swapperTile = tile.GetComponent<Swapper>();
+                var oneWayTile = tile.GetComponent<OneWayTile>();
+
+                if (swapperTile != null)
+                {
+                    swapperTile.PathID = counter+1;
+                }
+
+                if (oneWayTile != null)
+                {
+                    Broadcaster.Send(showDirectionWindow);
+                    
+                }
+
+                break;
             }
         }
     }
 
-    
+    private bool VerifyColor(Color comparison, Color source)
+    {
+        if ((int)(comparison.r * 1000) == (int)(source.r * 1000) &&
+                (int)(comparison.g * 1000) == (int)(source.g * 1000) &&
+                (int)(comparison.b * 1000) == (int)(source.b * 1000))
+        {
+            return true;
+        }
+        else return false;
+    }
+
 }
