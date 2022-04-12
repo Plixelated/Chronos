@@ -20,6 +20,12 @@ public class MapGenerator : MonoBehaviour
 
     public static Action showDirectionWindow;
 
+    public List<GameObject> pathAlts;
+
+    public int altSpawnThreshold;
+
+    public Color defaultPathColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,20 +69,34 @@ public class MapGenerator : MonoBehaviour
             {
                 Vector2 position  = new Vector2(x, y);
 
-                var tile = Instantiate<GameObject>(colorMapping.prefab, position, Quaternion.identity, parent.transform);
-
-                var swapperTile = tile.GetComponent<Swapper>();
-                var oneWayTile = tile.GetComponent<OneWayTile>();
-
-                if (swapperTile != null)
+                if (pixelColor == defaultPathColor)
                 {
-                    swapperTile.PathID = counter+1;
+                    int threshold = altSpawnThreshold;
+                    if (UnityEngine.Random.Range(0, 100) <= threshold)
+                    {
+                        int alt = UnityEngine.Random.Range(0, pathAlts.Count);
+                        Instantiate<GameObject>(pathAlts[alt], position, Quaternion.identity, parent.transform);
+                    }
+                    else
+                        Instantiate<GameObject>(colorMapping.prefab, position, Quaternion.identity, parent.transform);
                 }
-
-                if (oneWayTile != null)
+                else
                 {
-                    Broadcaster.Send(showDirectionWindow);
-                    
+                    var tile = Instantiate<GameObject>(colorMapping.prefab, position, Quaternion.identity, parent.transform);
+
+                    var swapperTile = tile.GetComponent<Swapper>();
+                    var oneWayTile = tile.GetComponent<OneWayTile>();
+
+                    if (swapperTile != null)
+                    {
+                        swapperTile.PathID = counter + 1;
+                    }
+
+                    //if (oneWayTile != null)
+                    //{
+                    //    Broadcaster.Send(showDirectionWindow);
+
+                    //}
                 }
 
                 break;

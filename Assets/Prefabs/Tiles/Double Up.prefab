@@ -60,6 +60,10 @@ PrefabInstance:
       value: Double Up
       objectReference: {fileID: 0}
     - target: {fileID: 9063339655533090967, guid: 02329abc80053fb46811a1c81ace75fa, type: 3}
+      propertyPath: yAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063339655533090967, guid: 02329abc80053fb46811a1c81ace75fa, type: 3}
       propertyPath: movementModifier
       value: 2
       objectReference: {fileID: 0}
