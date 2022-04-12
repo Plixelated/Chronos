@@ -9,9 +9,32 @@ public class AgeModifier: Tile
     public int ageModification;
     public TextMeshProUGUI modificationText;
     public bool ager;
+    public bool reset;
     public GameObject sprite;
     public static Action<int, string> modifiedAge;
     public string type;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        AgeManager.StartingAge += getStartingAge;
+    }
+
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        AgeManager.StartingAge += getStartingAge;
+    }
+
+    private void getStartingAge(int age)
+    {
+        if (reset)
+        {
+            if (ageModification != age)
+            ageModification = age;
+        }
+    }
 
     private void Start()
     {
@@ -40,7 +63,9 @@ public class AgeModifier: Tile
     private void Update()
     {
         if (ager)
-        this.modificationText.text = $"+{this.ageModification.ToString()}";
+            this.modificationText.text = $"+{this.ageModification.ToString()}";
+        else if (reset)
+            this.modificationText.text = this.ageModification.ToString();
         else
             this.modificationText.text = $"-{this.ageModification.ToString()}";
     }

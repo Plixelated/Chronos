@@ -17,6 +17,7 @@ public class AgeManager : MonoBehaviour
     [SerializeField]private float notificationTimer;
 
     public static Action<int> Age;
+    public static Action<int> StartingAge;
 
     private void OnEnable()
     {
@@ -43,13 +44,18 @@ public class AgeManager : MonoBehaviour
         {
             MinusAge(ageModification);
         }
+        else if (tile == "Reset")
+        {
+            ResetAge();
+            SetAgeNotification($"{ageModification}");
+        }
 
         SetAgeNotification($"+{ageModification}");
     }
 
     public void CheckAgeModification(Collider2D tile)
     {
-        if (tile.tag != "Ager" && tile.tag != "Reducer")
+        if (tile.tag != "Ager" && tile.tag != "Reducer" && tile.tag != "Reset")
             AddAge(agingRate);
     }
 
@@ -100,6 +106,7 @@ public class AgeManager : MonoBehaviour
     void Start()
     {
         ResetAge();
+        Broadcaster.Send(StartingAge, startingAge);
     }
 
     // Update is called once per frame

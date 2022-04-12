@@ -15,6 +15,7 @@ TagManager:
   - Reducer
   - Ager
   - Path
+  - Reset
   layers:
   - Default
   - TransparentFX
