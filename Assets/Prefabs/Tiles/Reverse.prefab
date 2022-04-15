@@ -404,8 +404,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 04175749cb6ea61409ee521da59dc836, type: 2}
-  m_sharedMaterial: {fileID: -6857236144565894722, guid: 04175749cb6ea61409ee521da59dc836, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bc199ed331af1f54585f5d7b0fc01d7c, type: 2}
+  m_sharedMaterial: {fileID: 2447022391683374848, guid: bc199ed331af1f54585f5d7b0fc01d7c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -429,8 +429,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27
-  m_fontSizeBase: 27
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -439,7 +439,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -20
+  m_characterSpacing: -5.5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -540,4 +540,6 @@ MonoBehaviour:
   ageModification: 5
   modificationText: {fileID: 4473348482870623906}
   ager: 0
+  reset: 0
   sprite: {fileID: 4999647307536471153}
+  type: 
