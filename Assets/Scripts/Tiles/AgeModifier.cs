@@ -38,6 +38,8 @@ public class AgeModifier: Tile
 
     private void Start()
     {
+        Debug.Log($"Tile Location {this.transform.position}");
+        Debug.Log($"Text Location {this.modificationText.transform.position}");
         type = this.tag;
     }
 

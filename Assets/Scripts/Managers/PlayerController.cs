@@ -9,6 +9,11 @@ public class PlayerController : MonoBehaviour
     public GameObject player;
     public InputMonitor input;
 
+    public float xMovement;
+    public float yMovement;
+
+    public SwipeDetection swipe;
+
     public Vector2 currentCell;
 
     public Transform targetCell;
@@ -79,16 +84,42 @@ public class PlayerController : MonoBehaviour
     //    movementModifier = modifier;
     //}
 
+    public void GetMovementDirection()
+    {
+        if (input.xInput != 0)
+            xMovement = input.xInput;
+        else if (swipe.xAxis != 0)
+        {
+            xMovement = swipe.xAxis;
+            Debug.Log(xMovement);
+        }
+        else
+            xMovement = 0;
+
+        if (input.yInput != 0)
+            yMovement = input.yInput;
+        else if (swipe.yAxis != 0)
+        {
+            yMovement = swipe.yAxis;
+            Debug.Log(yMovement);
+        }
+        else
+            yMovement = 0;
+
+
+
+    }
+
     public void CheckPath()
     {
-        checkXPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, pathway);
-        checkYPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput, 0f), 0.25f, pathway);
+        checkXPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(/*input.xInput*/xMovement, 0f, 0f), 0.25f, pathway);
+        checkYPath = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, /*input.yInput*/yMovement, 0f), 0.25f, pathway);
     }
 
     public void CheckForObstacle()
     {
-        checkXObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, obstacle);
-        checkYObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput, 0f), 0.25f, obstacle);
+        checkXObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(/*input.xInput*/xMovement, 0f, 0f), 0.25f, obstacle);
+        checkYObstacle = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, /*input.yInput*/yMovement, 0f), 0.25f, obstacle);
     }
 
     public float ValidateInput(float input)
@@ -123,13 +154,13 @@ public class PlayerController : MonoBehaviour
             Debug.Log(movementModifier);
             if (yInput != 0)
             {
-                var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
+                var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, yInput * movementModifier, 0f), 0.25f, pathway);
                 if (landingTile)
                 {
                     while (landingTile.tag == "Doubler")
                     {
                         movementModifier++;
-                        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, input.yInput * movementModifier, 0f), 0.25f, pathway);
+                        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(0f, yInput * movementModifier, 0f), 0.25f, pathway);
                     }
 
                     if (landingTile)
@@ -141,13 +172,13 @@ public class PlayerController : MonoBehaviour
             }
             if (xInput != 0)
             {
-                var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
+                var landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(xInput * movementModifier, 0f, 0f), 0.25f, pathway);
                 if (landingTile)
                 {
                     while (landingTile.tag == "Doubler")
                     {
                         movementModifier++;
-                        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput * movementModifier, 0f, 0f), 0.25f, pathway);
+                        landingTile = Physics2D.OverlapCircle(targetCell.position + new Vector3(xInput * movementModifier, 0f, 0f), 0.25f, pathway);
                     }
 
                     if (landingTile)
@@ -168,19 +199,19 @@ public class PlayerController : MonoBehaviour
     public void SetAnimatorValues()
     {
         playerAnimator.SetInteger("age", currentAge);
-        playerAnimator.SetInteger("x_axis", (int)input.xInput);
-        playerAnimator.SetInteger("y_axis", (int)input.yInput);
+        playerAnimator.SetInteger("x_axis", (int)/*input.xInput*/xMovement);
+        playerAnimator.SetInteger("y_axis", (int)/*input.yInput)*/yMovement);
     }
 
     public void XAxisAnimations()
     {
-        playerAnimator.SetInteger("direction_x", (int)input.xInput);
+        playerAnimator.SetInteger("direction_x", (int)/*input.xInput*/xMovement);
         playerAnimator.SetInteger("direction_y", 0);
     }
 
     public void YAxisAnimations()
     {
-        playerAnimator.SetInteger("direction_y", (int)input.yInput);
+        playerAnimator.SetInteger("direction_y", (int)/*input.yInput)*/yMovement);
         playerAnimator.SetInteger("direction_x", 0);
     }
 
@@ -200,25 +231,25 @@ public class PlayerController : MonoBehaviour
     {
         if (ValidateMovementThreshold())
         {
-            if (ValidateInput(input.xInput) == 1)
+            if (ValidateInput(/*input.xInput*/xMovement) == 1)
             {
-                FlipSprite(input.xInput);
+                FlipSprite(/*input.xInput*/xMovement);
                 XAxisAnimations();
                 if (/*!checkXObstacle && */checkXPath)
                 {
                     CheckTileType(checkXPath);
-                    MoveValidator(input.xInput, 0f);
+                    MoveValidator(/*input.xInput*/xMovement, 0f);
                 }
                 //else
                 //    Debug.Log("Unable to Move");
             }
-            if (ValidateInput(input.yInput) == 1)
+            if (ValidateInput(/*input.yInput*/yMovement) == 1)
             {
                 YAxisAnimations();
                 if (/*!checkYObstacle && */checkYPath)
                 {
                     CheckTileType(checkYPath);
-                    MoveValidator(0f, input.yInput);
+                    MoveValidator(0f, /*input.yInput*/yMovement);
                 }
                 //else
                 //    Debug.Log("Unable to Move");
@@ -231,7 +262,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        GetMovementDirection();
         CheckPath();
         CheckForObstacle();
         //MovePlayer();
@@ -250,7 +281,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (Physics2D.OverlapCircle(targetCell.position + new Vector3(input.xInput, 0f, 0f), 0.25f, obstacle) || Physics2D.OverlapCircle(targetCell.position + new Vector3(input.yInput, 0f, 0f), 0.25f, obstacle))
+        if (Physics2D.OverlapCircle(targetCell.position + new Vector3(/*input.xInput*/xMovement, 0f, 0f), 0.25f, obstacle) || 
+            Physics2D.OverlapCircle(targetCell.position + new Vector3(/*input.yInput*/yMovement, 0f, 0f), 0.25f, obstacle))
         {
             Gizmos.color = new Color32(255, 0, 0, 100);
         }

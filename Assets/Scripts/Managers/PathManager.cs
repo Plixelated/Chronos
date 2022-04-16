@@ -15,6 +15,7 @@ public class PathManager : MonoBehaviour
     {
         levelCompleted = false;
         ResetPaths();
+
     }
 
     public void ResetPaths()

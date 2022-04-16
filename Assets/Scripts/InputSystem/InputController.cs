@@ -44,6 +44,24 @@ public partial class @InputController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryContact"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""91a44952-6378-4250-80d0-56955517c8d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryPosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""95868e0e-09c3-4d1d-9f9e-32df3a92966a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +130,28 @@ public partial class @InputController : IInputActionCollection2, IDisposable
                     ""action"": ""XAxis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04bc621d-5c63-4fa1-af92-f5781c261c07"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b580ed5-bf1d-4e3b-961f-1de51f3ce051"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryContact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +162,8 @@ public partial class @InputController : IInputActionCollection2, IDisposable
         m_player = asset.FindActionMap("player", throwIfNotFound: true);
         m_player_YAxis = m_player.FindAction("YAxis", throwIfNotFound: true);
         m_player_XAxis = m_player.FindAction("XAxis", throwIfNotFound: true);
+        m_player_PrimaryContact = m_player.FindAction("PrimaryContact", throwIfNotFound: true);
+        m_player_PrimaryPosition = m_player.FindAction("PrimaryPosition", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,12 +225,16 @@ public partial class @InputController : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_player_YAxis;
     private readonly InputAction m_player_XAxis;
+    private readonly InputAction m_player_PrimaryContact;
+    private readonly InputAction m_player_PrimaryPosition;
     public struct PlayerActions
     {
         private @InputController m_Wrapper;
         public PlayerActions(@InputController wrapper) { m_Wrapper = wrapper; }
         public InputAction @YAxis => m_Wrapper.m_player_YAxis;
         public InputAction @XAxis => m_Wrapper.m_player_XAxis;
+        public InputAction @PrimaryContact => m_Wrapper.m_player_PrimaryContact;
+        public InputAction @PrimaryPosition => m_Wrapper.m_player_PrimaryPosition;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -204,6 +250,12 @@ public partial class @InputController : IInputActionCollection2, IDisposable
                 @XAxis.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnXAxis;
                 @XAxis.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnXAxis;
                 @XAxis.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnXAxis;
+                @PrimaryContact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryContact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryContact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryPosition;
+                @PrimaryPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryPosition;
+                @PrimaryPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryPosition;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -214,6 +266,12 @@ public partial class @InputController : IInputActionCollection2, IDisposable
                 @XAxis.started += instance.OnXAxis;
                 @XAxis.performed += instance.OnXAxis;
                 @XAxis.canceled += instance.OnXAxis;
+                @PrimaryContact.started += instance.OnPrimaryContact;
+                @PrimaryContact.performed += instance.OnPrimaryContact;
+                @PrimaryContact.canceled += instance.OnPrimaryContact;
+                @PrimaryPosition.started += instance.OnPrimaryPosition;
+                @PrimaryPosition.performed += instance.OnPrimaryPosition;
+                @PrimaryPosition.canceled += instance.OnPrimaryPosition;
             }
         }
     }
@@ -222,5 +280,7 @@ public partial class @InputController : IInputActionCollection2, IDisposable
     {
         void OnYAxis(InputAction.CallbackContext context);
         void OnXAxis(InputAction.CallbackContext context);
+        void OnPrimaryContact(InputAction.CallbackContext context);
+        void OnPrimaryPosition(InputAction.CallbackContext context);
     }
 }

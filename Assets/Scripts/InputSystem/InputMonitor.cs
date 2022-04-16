@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(-1)]
 public class InputMonitor : MonoBehaviour
 {
     public InputController input;
@@ -11,32 +12,61 @@ public class InputMonitor : MonoBehaviour
     public float yInput;
     public float xInput;
 
-    //public static Action up;
-    //public static Action down;
-    //public static Action left;
-    //public static Action right;
-
-    public int up;
-    public int down;
-    public int left;
-    public int right;
-
     public float holdDelay;
     public float timer;
+
+    public static Action<Vector2, float> StartTouch;
+    public static Action<Vector2, float> EndTouch;
+
+    [SerializeField]
+    private Camera mainCamera;
+
+
+    private void OnEnable()
+    {
+        input.player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        input.player.Disable();
+    }
+
+    private void Awake()
+    {
+        //mainCamera = Camera.main;
+        input = new InputController();
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        input = new InputController();
-        input.player.Enable();
-
         input.player.XAxis.started += xAxis;
         input.player.XAxis.canceled += ResetAxis;
 
         input.player.YAxis.performed += yAxis;
         input.player.YAxis.canceled += ResetAxis;
+
+        input.player.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
+        input.player.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
     }
+
+    private void StartTouchPrimary(InputAction.CallbackContext context)
+    {
+        Broadcaster.Send(StartTouch, Utils.ScreenToWorld(mainCamera, input.player.PrimaryPosition.ReadValue<Vector2>()), (float)context.startTime);
+    }
+
+    private void EndTouchPrimary(InputAction.CallbackContext context)
+    {
+        Broadcaster.Send(EndTouch, Utils.ScreenToWorld(mainCamera, input.player.PrimaryPosition.ReadValue<Vector2>()), (float)context.time);
+    }
+
+    public Vector2 PrimaryPosition()
+    {
+        return Utils.ScreenToWorld(mainCamera, input.player.PrimaryPosition.ReadValue<Vector2>());
+    }
+
 
     private void xAxis(InputAction.CallbackContext obj)
     {
@@ -65,6 +95,8 @@ public class InputMonitor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         if (timer > 0)
         {
             timer -= Time.deltaTime;
