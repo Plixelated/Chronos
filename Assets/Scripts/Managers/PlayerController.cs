@@ -36,8 +36,10 @@ public class PlayerController : MonoBehaviour
 
     public static Action playerDied;
     public static Action<string> tileType;
-    public static Action<Collider2D> currentTile; 
+    public static Action<Collider2D> currentTile;
     //public static Action<int, string>modifiedAge;
+    public static Action<int> y_movement;
+    public static Action<int> x_movement;
 
     public Animator playerAnimator;
 
@@ -106,7 +108,8 @@ public class PlayerController : MonoBehaviour
         else
             yMovement = 0;
 
-
+        Broadcaster.Send(y_movement, (int)yMovement);
+        Broadcaster.Send(x_movement, (int)xMovement);
 
     }
 
