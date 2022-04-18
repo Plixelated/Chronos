@@ -27,12 +27,20 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         PlayerController.playerDied += ResetLevel;
+        StarterTile.startingPosition += GetStartingPosition;
     }
 
     private void OnDisable()
     {
         PlayerController.playerDied -= ResetLevel;
+        StarterTile.startingPosition -= GetStartingPosition;
     }
+
+    private void GetStartingPosition(Vector3 pos)
+    {
+        startingCoordinates = pos;
+    }
+
     public void ResetLevel()
     {
         fade.SetBool("fade_in", false);

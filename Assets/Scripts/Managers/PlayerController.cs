@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
 
     public Transform targetCell;
 
+    public Vector3 startingPosition;
+
     public float movementSpeed;
 
     public int movementModifier;
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
         AgeManager.Age += GetCurrentAge;
         FreeMovementTile.modifier += GetMovementModifier;
         GameManager.resetting += GetResetStatus;
+        StarterTile.startingPosition += GetStartingPosition;
         //FreeMovementTile.resetModifier += ResetMovementModifier;
     }
 
@@ -73,6 +76,7 @@ public class PlayerController : MonoBehaviour
         AgeManager.Age -= GetCurrentAge;
         FreeMovementTile.modifier -= GetMovementModifier;
         GameManager.resetting -= GetResetStatus;
+        StarterTile.startingPosition -= GetStartingPosition;
     }
 
     public void GetCurrentAge(int age)
@@ -93,6 +97,11 @@ public class PlayerController : MonoBehaviour
     private void GetResetStatus(bool status)
     {
         resetting = status;
+    }
+
+    private void GetStartingPosition(Vector3 pos)
+    {
+        startingPosition = pos;
     }
 
     public void GetMovementDirection()
@@ -270,6 +279,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (transform.position != startingPosition)
+        {
+            transform.position = startingPosition;
+            targetCell.gameObject.transform.position = startingPosition;
+        }
+    }
 
 
     // Update is called once per frame

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5357579894101372584}
   - component: {fileID: 5357579894101372585}
   - component: {fileID: 8305372938889168213}
+  - component: {fileID: 1560603029785188041}
   m_Layer: 7
   m_Name: Finisher
   m_TagString: Finisher
@@ -127,3 +128,18 @@ MonoBehaviour:
   y_pos: 0
   y_sort: 0
   child: 0
+--- !u!114 &1560603029785188041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357579894101372590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21841e76aea8f644484b2db03d1c4302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathManager: {fileID: 0}
+  currentTile: {fileID: 0}
+  previousTile: {fileID: 0}

@@ -7,10 +7,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3148149142024041161, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 85c4296f4d474ea42aeab0d2394132c9, type: 3}
     - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: reset
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 8350127960675452337}
     - target: {fileID: 6581541831258570309, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -69,3 +77,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+--- !u!1 &8350127960675452337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4600684126169775447, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+  m_PrefabInstance: {fileID: 5492549820285368550}
+  m_PrefabAsset: {fileID: 0}

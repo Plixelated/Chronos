@@ -15,10 +15,26 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3148149142024041161, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8d783de1cbcdacf42b2b672b5bce9c1f, type: 3}
+    - target: {fileID: 4600684126169775447, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: m_Name
+      value: Particle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4600684126169775447, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: ager
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 1420633930231826818}
     - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: ageModification
       value: 5
@@ -101,3 +117,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+--- !u!1 &1420633930231826818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4600684126169775447, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+  m_PrefabInstance: {fileID: 3202044895505511637}
+  m_PrefabAsset: {fileID: 0}

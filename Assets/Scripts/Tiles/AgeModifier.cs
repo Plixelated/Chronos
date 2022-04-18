@@ -14,6 +14,8 @@ public class AgeModifier: Tile
     public static Action<int, string> modifiedAge;
     public string type;
 
+    public GameObject particle;
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -49,6 +51,8 @@ public class AgeModifier: Tile
         {
             sprite.SetActive(false);
             Broadcaster.Send(modifiedAge, this.ageModification, this.tag);
+            if (!this.particle.activeSelf)
+            this.particle.SetActive(true);
         }
         else
             this.tag = "Path";

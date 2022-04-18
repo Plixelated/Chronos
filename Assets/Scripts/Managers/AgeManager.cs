@@ -116,7 +116,7 @@ public class AgeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ageText.text = $"Age: {currentAge.ToString()}";
+        ageText.text = $"{currentAge.ToString()} Years";
         NotificationTimer();
 
     }
