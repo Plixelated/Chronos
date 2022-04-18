@@ -75,14 +75,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1462870369
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 8637432253763965954, guid: 087bf6fad997a1c42997660e0aad2414, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.125, y: 1.625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -102,9 +102,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 9193076413600085644}
   input: {fileID: 0}
+  xMovement: 0
+  yMovement: 0
+  swipe: {fileID: 0}
   currentCell: {x: 0, y: 0}
   targetCell: {fileID: 9193076414525610004}
   movementSpeed: 5
+  movementModifier: 0
   movementCheckThreshold: 0.05
   obstacle:
     serializedVersion: 2
@@ -114,13 +118,8 @@ MonoBehaviour:
     m_Bits: 128
   pathManager: {fileID: 0}
   currentAge: 0
-  startingAge: 20
-  agingRate: 5
+  resetting: 0
   playerAnimator: {fileID: 9193076413600085638}
-  notificationTimer: 0
-  notificationlength: 1
-  ageCount: {fileID: 0}
-  ageModifierNotification: {fileID: 0}
 --- !u!61 &9193076413600085640
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -139,7 +138,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.125, y: 1.6875}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 1.125, y: 1.625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

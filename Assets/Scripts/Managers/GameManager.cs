@@ -16,10 +16,13 @@ public class GameManager : MonoBehaviour
     public GameObject loadingScreen;
     public AgeManager ageManager;
 
+
     public static Action<bool> resetting;
 
     public Animator fade;
     public float resetDelay;
+
+    public GameObject pauseMenu;
 
     private void OnEnable()
     {
@@ -34,6 +37,8 @@ public class GameManager : MonoBehaviour
     {
         fade.SetBool("fade_in", false);
         fade.SetBool("fade_out", true);
+
+        Broadcaster.Send(resetting, true);
 
         //if (hasReset != null)
         //    hasReset();
@@ -52,8 +57,10 @@ public class GameManager : MonoBehaviour
         player.GetComponent<SpriteRenderer>().enabled = false;
 
         player.GetComponent<SpriteRenderer>().enabled = true;
+        Broadcaster.Send(resetting, false);
         fade.SetBool("fade_in", true);
         fade.SetBool("fade_out", false);
+
     }
 
     public IEnumerator ResetDelay()
@@ -110,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckPlayerAge()
     {
-        if (player.currentAge >= pathManager.maxAge)
+        if (player.currentAge >= ageManager.maxAge)
         {
             player.input.xInput = 0;
             player.input.yInput = 0;
@@ -126,6 +133,18 @@ public class GameManager : MonoBehaviour
             fade.SetBool("fade_in", false);
             StartCoroutine(LevelTransition());
         }
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        pauseMenu.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     private void Awake()

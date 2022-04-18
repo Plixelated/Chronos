@@ -13,6 +13,7 @@ public class AgeManager : MonoBehaviour
     public int ageModifier;
     public int agingRate;
     public int startingAge;
+    public int maxAge;
     public float notificationLength;
     [SerializeField]private float notificationTimer;
 
@@ -61,9 +62,12 @@ public class AgeManager : MonoBehaviour
 
     public void AddAge(int age)
     {
-        currentAge += age;
-        SetAgeNotification($"+{age}");
-        Broadcaster.Send(Age, currentAge);
+        if (currentAge <= maxAge)
+        { 
+            currentAge += age;
+            SetAgeNotification($"+{age}");
+            Broadcaster.Send(Age, currentAge);
+        }
     }
 
     public void MinusAge(int age)

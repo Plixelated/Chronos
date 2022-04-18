@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     //public int startingAge;
     //public int agingRate;
 
+    public bool resetting;
+
 
     public static Action playerDied;
     public static Action<string> tileType;
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         AgeManager.Age += GetCurrentAge;
         FreeMovementTile.modifier += GetMovementModifier;
+        GameManager.resetting += GetResetStatus;
         //FreeMovementTile.resetModifier += ResetMovementModifier;
     }
 
@@ -69,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         AgeManager.Age -= GetCurrentAge;
         FreeMovementTile.modifier -= GetMovementModifier;
+        GameManager.resetting -= GetResetStatus;
     }
 
     public void GetCurrentAge(int age)
@@ -85,6 +89,11 @@ public class PlayerController : MonoBehaviour
     //{
     //    movementModifier = modifier;
     //}
+
+    private void GetResetStatus(bool status)
+    {
+        resetting = status;
+    }
 
     public void GetMovementDirection()
     {
@@ -196,7 +205,8 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer()
     {
-        transform.position = Vector2.MoveTowards(transform.position, targetCell.position, movementSpeed * Time.deltaTime);
+        //transform.position = Vector2.MoveTowards(transform.position, targetCell.position, movementSpeed * Time.deltaTime);
+        transform.position = Vector2.Lerp(transform.position, targetCell.position,movementSpeed * Time.deltaTime);
     }
 
     public void SetAnimatorValues()
@@ -265,13 +275,24 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetMovementDirection();
-        CheckPath();
-        CheckForObstacle();
-        //MovePlayer();
-        SetAnimatorValues();
-        ValidateMovement();
-        MovePlayer();
+        if (!resetting)
+        {
+            GetMovementDirection();
+            CheckPath();
+            //CheckForObstacle();
+            //MovePlayer();
+            SetAnimatorValues();
+            ValidateMovement();
+            //MovePlayer();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!resetting)
+        {
+            MovePlayer();
+        }
     }
 
     public void ReturnToIdle()

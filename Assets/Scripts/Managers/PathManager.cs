@@ -5,7 +5,7 @@ using UnityEngine;
 public class PathManager : MonoBehaviour
 {
     public List<GameObject> pathways;
-    public int maxAge;
+    //public int maxAge;
 
     public int currentPath;
     public bool levelCompleted;
