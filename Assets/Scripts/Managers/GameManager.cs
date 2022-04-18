@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
 
             foreach (Transform child in paths)
             {
+                if (child.tag != "Particle")
                 child.gameObject.SetActive(true);
                 var crumbleTile = child.GetComponent<CrumbleTile>();
                 var breakingTile = child.GetComponent<BreakingTile>();
@@ -120,6 +121,7 @@ public class GameManager : MonoBehaviour
                 { 
                     agingTile.OnReset();
                 }
+
             }
         }
     

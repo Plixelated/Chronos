@@ -16,6 +16,7 @@ TagManager:
   - Ager
   - Path
   - Reset
+  - Particle
   layers:
   - Default
   - TransparentFX

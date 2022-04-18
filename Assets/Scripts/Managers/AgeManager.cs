@@ -62,7 +62,7 @@ public class AgeManager : MonoBehaviour
 
     public void AddAge(int age)
     {
-        if (currentAge <= maxAge)
+        if (currentAge < maxAge)
         { 
             currentAge += age;
             SetAgeNotification($"+{age}");

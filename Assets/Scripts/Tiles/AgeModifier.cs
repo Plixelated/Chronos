@@ -64,6 +64,7 @@ public class AgeModifier: Tile
         sprite.SetActive(true);
         if (this.tag != type)
             this.tag = type;
+        this.particle.SetActive(false);
     }
 
     private void Update()

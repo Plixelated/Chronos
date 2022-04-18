@@ -27,6 +27,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4600684126169775447, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: m_TagString
+      value: Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 5227160632506768282, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: ager
       value: 1
