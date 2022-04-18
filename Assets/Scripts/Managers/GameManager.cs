@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject startingTile;
     public LevelLoader levelLoader;
     public PathManager pathManager;
     public PlayerController player;
@@ -163,10 +162,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    private void Awake()
-    {
-        startingCoordinates = startingTile.transform.position;
-    }
     // Start is called before the first frame update
     void Start()
     {
