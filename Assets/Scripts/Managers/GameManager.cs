@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     public GameObject movementChecker;
     public GameObject loadingScreen;
     public AgeManager ageManager;
-
+    public GameObject hourglass;
+    public bool resetPlayer;
 
     public static Action<bool> resetting;
 
@@ -45,17 +46,12 @@ public class GameManager : MonoBehaviour
     {
         fade.SetBool("fade_in", false);
         fade.SetBool("fade_out", true);
-
-        Broadcaster.Send(resetting, true);
-
-        //if (hasReset != null)
-        //    hasReset();
-
         StartCoroutine(ResetDelay());
     }
 
     public void ResetObjects()
     {
+
         player.transform.position = startingCoordinates;
         movementChecker.transform.position = startingCoordinates;
 
@@ -66,13 +62,21 @@ public class GameManager : MonoBehaviour
 
         player.GetComponent<SpriteRenderer>().enabled = true;
         Broadcaster.Send(resetting, false);
+
         fade.SetBool("fade_in", true);
         fade.SetBool("fade_out", false);
 
+        hourglass.SetActive(false);
+        resetPlayer = false;
     }
 
     public IEnumerator ResetDelay()
     {
+        yield return new WaitForSeconds(resetDelay/2);
+
+        Debug.Log("Corouting");
+        hourglass.SetActive(true);
+
         yield return new WaitForSeconds(resetDelay);
         ResetObjects();
     }
@@ -129,7 +133,11 @@ public class GameManager : MonoBehaviour
         {
             player.input.xInput = 0;
             player.input.yInput = 0;
-            ResetLevel();
+            if (!resetPlayer)
+            {
+                ResetLevel();
+                resetPlayer = true;
+            }
         }
     }
 
