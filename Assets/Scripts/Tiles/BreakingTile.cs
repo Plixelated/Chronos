@@ -12,9 +12,14 @@ public class BreakingTile : Tile
 
     public List<Sprite> sprites;
 
+    public CameraShake cameraShake;
+
 
     private void Start()
     {
+        if (cameraShake == null)
+            cameraShake = FindObjectOfType<CameraShake>();
+
         currentPasses = 0;
     }
 
@@ -25,6 +30,8 @@ public class BreakingTile : Tile
 
     public override void Effect()
     {
+        StartCoroutine(cameraShake.Shake(0.1f, 0.1f));
+
         if (currentPasses < maxPasses)
         {
             currentPasses++;

@@ -10,11 +10,20 @@ public class CrumbleTile : Tile
     public Transform initalScale;
     public bool resetting;
 
+    public CameraShake cameraShake;
+
     // Start is called before the first frame update
+
+    private void Start()
+    {
+        if (cameraShake == null)
+            cameraShake = FindObjectOfType<CameraShake>();
+    }
 
     public override void Effect()
     {
         this.SetTimer();
+        StartCoroutine(cameraShake.Shake(.75f, 0.02f));
     }
 
     public override void OnReset()
