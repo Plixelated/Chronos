@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(resetDelay/2);
 
-        Debug.Log("Corouting");
         hourglass.SetActive(true);
 
         yield return new WaitForSeconds(resetDelay);
@@ -164,9 +163,15 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    private void Awake()
+    {
+        player.transform.position = startingCoordinates;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+
         if (loadingScreen.activeSelf)
         {
             loadingScreen.SetActive(false);

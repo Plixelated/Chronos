@@ -204,6 +204,56 @@ public partial class @InputController : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""dialogue"",
+            ""id"": ""766b39ea-7c3d-4470-8f49-66865608a0c8"",
+            ""actions"": [
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""efa342ed-5a74-41d7-a972-8266a5a14d77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ca0672ff-0419-4774-84a4-2e45d9652584"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4807ac82-3156-4719-8570-09bf80102ba0"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27dcbeb2-a90c-47db-a768-8d621bd12067"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -217,6 +267,9 @@ public partial class @InputController : IInputActionCollection2, IDisposable
         // main_menu
         m_main_menu = asset.FindActionMap("main_menu", throwIfNotFound: true);
         m_main_menu_Click = m_main_menu.FindAction("Click", throwIfNotFound: true);
+        // dialogue
+        m_dialogue = asset.FindActionMap("dialogue", throwIfNotFound: true);
+        m_dialogue_Click = m_dialogue.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -362,6 +415,39 @@ public partial class @InputController : IInputActionCollection2, IDisposable
         }
     }
     public Main_menuActions @main_menu => new Main_menuActions(this);
+
+    // dialogue
+    private readonly InputActionMap m_dialogue;
+    private IDialogueActions m_DialogueActionsCallbackInterface;
+    private readonly InputAction m_dialogue_Click;
+    public struct DialogueActions
+    {
+        private @InputController m_Wrapper;
+        public DialogueActions(@InputController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Click => m_Wrapper.m_dialogue_Click;
+        public InputActionMap Get() { return m_Wrapper.m_dialogue; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DialogueActions set) { return set.Get(); }
+        public void SetCallbacks(IDialogueActions instance)
+        {
+            if (m_Wrapper.m_DialogueActionsCallbackInterface != null)
+            {
+                @Click.started -= m_Wrapper.m_DialogueActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_DialogueActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_DialogueActionsCallbackInterface.OnClick;
+            }
+            m_Wrapper.m_DialogueActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+            }
+        }
+    }
+    public DialogueActions @dialogue => new DialogueActions(this);
     public interface IPlayerActions
     {
         void OnYAxis(InputAction.CallbackContext context);
@@ -370,6 +456,10 @@ public partial class @InputController : IInputActionCollection2, IDisposable
         void OnPrimaryPosition(InputAction.CallbackContext context);
     }
     public interface IMain_menuActions
+    {
+        void OnClick(InputAction.CallbackContext context);
+    }
+    public interface IDialogueActions
     {
         void OnClick(InputAction.CallbackContext context);
     }

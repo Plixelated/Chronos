@@ -35,7 +35,13 @@ public class LevelLoader : MonoBehaviour
     private void SaveProgress()
     {
         currentLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        PlayerPrefs.SetInt("CurrentLevel", currentLevelIndex);
+
+        int savedLevel = PlayerPrefs.GetInt("CurrentLevel");
+        
+        if (savedLevel != currentLevelIndex)
+        {
+            PlayerPrefs.SetInt("CurrentLevel", currentLevelIndex);
+        }
     }
 
     private void ResetTransitions()
@@ -77,6 +83,11 @@ public class LevelLoader : MonoBehaviour
     public void LoadSpecificLevel(string level)
     {
         StartCoroutine(LoadLevel(level));
+    }
+
+    public void LoadSavedLevel()
+    {
+        StartCoroutine(LoadLevel(PlayerPrefs.GetInt("CurrentLevel")));
     }
 
     //Loads a Specific Scene Using Name

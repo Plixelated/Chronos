@@ -51,6 +51,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 768361797
+    locked: 0
   - name: Obstacle
     uniqueID: 1466024881
     locked: 0

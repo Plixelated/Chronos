@@ -8,7 +8,7 @@ public class MainMenuButtons : MonoBehaviour
 
     public void PlayButton()
     {
-        level.NextLevel();
+        level.LoadSavedLevel();
     }
 
     public void LevelsButton()
