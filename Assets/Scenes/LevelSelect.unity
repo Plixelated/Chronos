@@ -238,7 +238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &469387018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -332,7 +332,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -88, y: 341.8}
+  m_AnchoredPosition: {x: -88, y: 341.80078}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &623327569
@@ -510,7 +510,7 @@ MonoBehaviour:
   m_ScaleFactor: 16
   m_ReferenceResolution: {x: 540, y: 960}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -584,18 +584,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777796513}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 108.968605}
+  m_LocalPosition: {x: 0, y: 0, z: 108.96827}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7922238543545113054}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.13745117}
-  m_SizeDelta: {x: 500.5, y: 600}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 249.3}
+  m_SizeDelta: {x: 600, y: 600}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &777796515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,7 +1015,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 253.57}
+  m_AnchoredPosition: {x: 0, y: 253.57031}
   m_SizeDelta: {x: 637.2, y: 181.5}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &972095683
@@ -1091,8 +1091,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 8.5, y: -694.5}
-  m_SizeDelta: {x: 690.7, y: 600}
+  m_AnchoredPosition: {x: 8.5, y: -687.5}
+  m_SizeDelta: {x: 824.1, y: 600}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1168462636
 MonoBehaviour:
@@ -1170,7 +1170,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.0000076293945}
-  m_SizeDelta: {x: 249.3, y: 400}
+  m_SizeDelta: {x: 304.6, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1178094815
 MonoBehaviour:
@@ -1462,7 +1462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354867069}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -230.43225, z: -8641.209}
+  m_LocalPosition: {x: 0, y: -149.08, z: -8641.209}
   m_LocalScale: {x: 19.202688, y: 19.202688, z: 96.013435}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1483,7 +1483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6773b8544339a7b4b84851034b66430e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 0.5
+  scrollSpeed: 0.25
   length: 0
 --- !u!212 &1354867072
 SpriteRenderer:
@@ -1763,7 +1763,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651689720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.07, z: 0}
+  m_LocalPosition: {x: 0, y: -5.18, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1805,7 +1805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_RootOrder
@@ -1813,19 +1813,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1833,7 +1833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 105.7
+      value: 97.1
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1865,11 +1865,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 270
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 813.4
+      value: -57.5
       objectReference: {fileID: 0}
     - target: {fileID: 514482958249789567, guid: 4302f5634b084ec499d5e7a54e0ae582, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2179,7 +2179,7 @@ MonoBehaviour:
   m_ScaleFactor: 16
   m_ReferenceResolution: {x: 540, y: 960}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

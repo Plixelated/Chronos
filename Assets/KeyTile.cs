@@ -18,4 +18,10 @@ public class KeyTile : Tile
         }
 
     }
+
+    public override void OnReset()
+    {
+        Debug.Log("Sending Unlock Signal");
+        Broadcaster.Send(unlocked, false);
+    }
 }

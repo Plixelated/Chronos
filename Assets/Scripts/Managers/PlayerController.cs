@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float xMovement;
     public float yMovement;
 
+    public bool canMove;
+
     public SwipeDetection swipe;
 
     public Vector2 currentCell;
@@ -299,7 +301,8 @@ public class PlayerController : MonoBehaviour
             //CheckForObstacle();
             //MovePlayer();
             SetAnimatorValues();
-            ValidateMovement();
+            if (canMove)
+                ValidateMovement();
             //MovePlayer();
         }
     }

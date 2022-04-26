@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
 
     public void ResetObjects()
     {
-
         player.transform.position = startingCoordinates;
         movementChecker.transform.position = startingCoordinates;
 
@@ -67,10 +66,13 @@ public class GameManager : MonoBehaviour
 
         hourglass.SetActive(false);
         resetPlayer = false;
+        player.canMove = true;
     }
 
     public IEnumerator ResetDelay()
     {
+        player.canMove = false;
+
         yield return new WaitForSeconds(resetDelay/2);
 
         hourglass.SetActive(true);
@@ -96,30 +98,39 @@ public class GameManager : MonoBehaviour
             {
                 if (child.tag != "Particle")
                 child.gameObject.SetActive(true);
-                var crumbleTile = child.GetComponent<CrumbleTile>();
-                var breakingTile = child.GetComponent<BreakingTile>();
-                var oneWayTile = child.GetComponent<OneWayTile>();
-                var agingTile = child.GetComponent<AgeModifier>();
-
-                if (crumbleTile != null)
+                
+                if (child != null)
                 {
-                    crumbleTile.OnReset();
+                    var tile = child.GetComponent<Tile>();
+                    if (tile != null)
+                    {
+                        tile.OnReset();
+                    }
                 }
+                //var crumbleTile = child.GetComponent<CrumbleTile>();
+                //var breakingTile = child.GetComponent<BreakingTile>();
+                //var oneWayTile = child.GetComponent<OneWayTile>();
+                //var agingTile = child.GetComponent<AgeModifier>();
 
-                if (breakingTile != null)
-                {
-                    breakingTile.OnReset();
-                }
+                //if (crumbleTile != null)
+                //{
+                //    crumbleTile.OnReset();
+                //}
 
-                if (oneWayTile != null)
-                { 
-                    oneWayTile.OnReset();
-                }
+                //if (breakingTile != null)
+                //{
+                //    breakingTile.OnReset();
+                //}
 
-                if (agingTile != null)
-                { 
-                    agingTile.OnReset();
-                }
+                //if (oneWayTile != null)
+                //{ 
+                //    oneWayTile.OnReset();
+                //}
+
+                //if (agingTile != null)
+                //{ 
+                //    agingTile.OnReset();
+                //}
 
             }
         }
@@ -131,9 +142,7 @@ public class GameManager : MonoBehaviour
     {
         if (player.currentAge >= ageManager.maxAge)
         {
-            player.input.xInput = 0;
-            player.input.yInput = 0;
-            if (!resetPlayer)
+            if (!resetPlayer && !pathManager.levelCompleted)
             {
                 ResetLevel();
                 resetPlayer = true;
@@ -176,6 +185,7 @@ public class GameManager : MonoBehaviour
         {
             loadingScreen.SetActive(false);
         }
+        player.canMove = true;
     }
 
     // Update is called once per frame
