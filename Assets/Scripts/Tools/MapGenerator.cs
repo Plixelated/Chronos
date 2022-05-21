@@ -47,7 +47,14 @@ public class MapGenerator : MonoBehaviour
             }
 
             parent.transform.position = startingSpawnLocation;
-            pathManager.pathways.Add(parent);
+
+            if (pathManager.pathways.Count > 0)
+            {
+                if (pathManager.pathways[i] == null)
+                    pathManager.pathways[i] = parent;
+            }
+            else
+                pathManager.pathways.Add(parent);
         }
     }
 

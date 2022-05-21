@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     private void GetStartingPosition(Vector3 pos)
     {
+        Debug.Log("Received Starting Coordinates");
         startingCoordinates = pos;
     }
 
@@ -174,12 +175,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        player.transform.position = startingCoordinates;
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        player.transform.position = startingCoordinates;
+        player.targetCell.transform.position = startingCoordinates;
 
         if (loadingScreen.activeSelf)
         {
