@@ -12,6 +12,7 @@ public class TileManager : MonoBehaviour
     public Image currentTileImage;
     public Vector2 selectedPosition;
     public List<PlacedTile> placedTiles;
+    public MapGenerator mapGenerator;
 
     private void OnEnable()
     {
@@ -44,21 +45,20 @@ public class TileManager : MonoBehaviour
         PlaceTile();
     }
 
-    private Color GetTileColor(string tileName)
+    private Color GetTileColor(GameObject tile)
     {
-        switch (tileName)
+        var colorMap = mapGenerator.colorMapping;
+
+        foreach (var entry in colorMap)
         {
-            case "Obstacle":
-                return Color.black;
-            case "Path":
-                return Color.white;
-            case "Starter":
-                return new Color32(0,153,219,255);
-            case "OneWay Tile":
-                return new Color32(254, 174, 52, 255);
-            default:
-                return Color.white;
+            if (tile == entry.prefab)
+            {
+                return entry.color;
+            }
         }
+
+        return Color.red;
+
     }
 
     private void PlaceTile()
@@ -66,7 +66,7 @@ public class TileManager : MonoBehaviour
         var tile = new PlacedTile();
         tile.position = selectedPosition;
         tile.tile = selectedTile;
-        tile.color = GetTileColor(tile.tile.ToString());
+        tile.color = GetTileColor(tile.tile);
         placedTiles.Add(tile);
         Instantiate(currentTile, new Vector3(selectedPosition.x, selectedPosition.y, transform.position.z), Quaternion.identity);
     }
@@ -74,7 +74,7 @@ public class TileManager : MonoBehaviour
     {
         if (currentTile == null)
         {
-            currentTile = defaultTile;
+            currentTile = selectedTile = defaultTile;
             currentTileImage.sprite = defaultTile.GetComponent<SpriteRenderer>().sprite;
         }
     }

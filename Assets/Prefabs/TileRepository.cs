@@ -12,6 +12,7 @@ public class TileRepository : MonoBehaviour {
 
         for (int i = 0; i < colorMap.Length; i++)
         {
+            Debug.Log("Copying...");
             tiles[i].tile = colorMap[i].prefab;
             tiles[i].color = colorMap[i].color;
         }

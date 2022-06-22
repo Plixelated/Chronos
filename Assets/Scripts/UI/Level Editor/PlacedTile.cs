@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlacedTile : MonoBehaviour
+[System.Serializable]
+public class PlacedTile
 {
     public Vector2 position;
     public GameObject tile;
