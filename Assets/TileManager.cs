@@ -14,11 +14,15 @@ public class TileManager : MonoBehaviour
     public List<PlacedTile> placedTiles;
     public MapGenerator mapGenerator;
 
+    public Vector2 mousePosition;
+    public Vector2 tilePosition;
+
     private void OnEnable()
     {
         TileButton.selectedTile += GetSelectedTile;
         TileButton.selectedSprite += GetSelectedSprite;
         ReturnPosition.selectedPosition += GetSelectedPosition;
+        InputMonitor.StartTouch += GetMousePosition;
     }
 
     private void OnDisable()
@@ -78,4 +82,33 @@ public class TileManager : MonoBehaviour
             currentTileImage.sprite = defaultTile.GetComponent<SpriteRenderer>().sprite;
         }
     }
+
+    private void DeleteTile()
+    {
+        foreach (var tile in placedTiles)
+        {
+            if (selectedPosition == tile.position)
+            {
+                Debug.Log("DELETE");
+            }
+        }
+    }
+
+    private void GetMousePosition(Vector2 position, float time)
+    {
+        mousePosition = position;
+
+        RaycastHit2D hit = Physics2D.BoxCast(position, new Vector2(0.01f, 0.01f), 0f, Vector2.zero);
+
+        if (hit.collider.gameObject.layer == 7)
+        {
+            var tilePosition = hit.collider.gameObject.transform.position;
+
+            if (selectedPosition.x == tilePosition.x && selectedPosition.y == tilePosition.y)
+            {
+                DeleteTile();
+            }
+        }
+    }
+
 }
