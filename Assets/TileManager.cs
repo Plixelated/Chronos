@@ -106,11 +106,16 @@ public class TileManager : MonoBehaviour
 
             if (selected.layer == 7)
             {
-                DeleteTile(tilePosition);
+                if (selectedTile.tag != selected.tag)
+                {
+                    DeleteTile(tilePosition);
+                    PlaceTile(tilePosition);
+                }
+                else
+                    DeleteTile(tilePosition);
             }
             if (selected.layer == 8)
             {
-
                 PlaceTile(tilePosition);
             }
         }
