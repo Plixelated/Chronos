@@ -8,4 +8,5 @@ public class PlacedTile
     public Vector2 position;
     public GameObject tile;
     public Color color;
+    public GameObject prefab;
 }

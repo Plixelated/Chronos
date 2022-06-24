@@ -21,7 +21,6 @@ public class TileManager : MonoBehaviour
     {
         TileButton.selectedTile += GetSelectedTile;
         TileButton.selectedSprite += GetSelectedSprite;
-        ReturnPosition.selectedPosition += GetSelectedPosition;
         InputMonitor.StartTouch += GetMousePosition;
     }
 
@@ -32,7 +31,7 @@ public class TileManager : MonoBehaviour
     }
 
     private void GetSelectedTile(GameObject tile)
-    { 
+    {
         selectedTile = tile;
         currentTile = selectedTile;
     }
@@ -41,12 +40,6 @@ public class TileManager : MonoBehaviour
     {
         selectedTileSprite = sprite;
         currentTileImage.sprite = selectedTileSprite;
-    }
-
-    private void GetSelectedPosition(Vector2 pos)
-    {
-        selectedPosition = pos;
-        PlaceTile();
     }
 
     private Color GetTileColor(GameObject tile)
@@ -65,15 +58,18 @@ public class TileManager : MonoBehaviour
 
     }
 
-    private void PlaceTile()
+    private void PlaceTile(Vector2 pos)
     {
+        selectedPosition = pos;
+
         var tile = new PlacedTile();
-        tile.position = selectedPosition;
-        tile.tile = selectedTile;
-        tile.color = GetTileColor(tile.tile);
+        tile.position = pos;
+        tile.prefab = selectedTile;
+        tile.color = GetTileColor(tile.prefab);
+        tile.tile = Instantiate(currentTile, new Vector3(selectedPosition.x, selectedPosition.y, transform.position.z), Quaternion.identity);
         placedTiles.Add(tile);
-        Instantiate(currentTile, new Vector3(selectedPosition.x, selectedPosition.y, transform.position.z), Quaternion.identity);
     }
+
     private void Start()
     {
         if (currentTile == null)
@@ -83,13 +79,16 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private void DeleteTile()
+    private void DeleteTile(Vector2 pos)
     {
         foreach (var tile in placedTiles)
         {
-            if (selectedPosition == tile.position)
+            if (pos == tile.position)
             {
-                Debug.Log("DELETE");
+                tile.tile.gameObject.SetActive(false);
+
+                placedTiles.Remove(tile);
+                break;
             }
         }
     }
@@ -100,13 +99,19 @@ public class TileManager : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.BoxCast(position, new Vector2(0.01f, 0.01f), 0f, Vector2.zero);
 
-        if (hit.collider.gameObject.layer == 7)
+        if (hit.collider)
         {
-            var tilePosition = hit.collider.gameObject.transform.position;
+            var selected = hit.collider.gameObject;
+            Vector2 tilePosition = new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
 
-            if (selectedPosition.x == tilePosition.x && selectedPosition.y == tilePosition.y)
+            if (selected.layer == 7)
             {
-                DeleteTile();
+                DeleteTile(tilePosition);
+            }
+            if (selected.layer == 8)
+            {
+
+                PlaceTile(tilePosition);
             }
         }
     }
