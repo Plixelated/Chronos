@@ -28,8 +28,9 @@ public class TileManager : MonoBehaviour
 
     private void OnDisable()
     {
-        TileButton.selectedTile += GetSelectedTile;
-        TileButton.selectedSprite += GetSelectedSprite;
+        TileButton.selectedTile -= GetSelectedTile;
+        TileButton.selectedSprite -= GetSelectedSprite;
+        InputMonitor.StartTouch -= GetMousePosition;
     }
 
     private void GetSelectedTile(GameObject tile)
@@ -87,8 +88,8 @@ public class TileManager : MonoBehaviour
         {
             if (pos == tile.position)
             {
-                tile.tile.gameObject.SetActive(false);
-
+                //tile.tile.gameObject.SetActive(false);
+                Destroy(tile.tile);
                 placedTiles.Remove(tile);
                 break;
             }
@@ -106,22 +107,19 @@ public class TileManager : MonoBehaviour
             var selected = hit.collider.gameObject;
             Vector2 tilePosition = new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
 
-            if (this.gameObject.activeSelf)
+            if (selected.layer == 7)
             {
-                if (selected.layer == 7)
+                if (selectedTile.tag != selected.tag)
                 {
-                    if (selectedTile.tag != selected.tag)
-                    {
-                        DeleteTile(tilePosition);
-                        PlaceTile(tilePosition);
-                    }
-                    else
-                        DeleteTile(tilePosition);
-                }
-                if (selected.layer == 8)
-                {
+                    DeleteTile(tilePosition);
                     PlaceTile(tilePosition);
                 }
+                else
+                    DeleteTile(tilePosition);
+            }
+            if (selected.layer == 8)
+            {
+                PlaceTile(tilePosition);
             }
         }
     }

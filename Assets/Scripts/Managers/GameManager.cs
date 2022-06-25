@@ -108,31 +108,6 @@ public class GameManager : MonoBehaviour
                         tile.OnReset();
                     }
                 }
-                //var crumbleTile = child.GetComponent<CrumbleTile>();
-                //var breakingTile = child.GetComponent<BreakingTile>();
-                //var oneWayTile = child.GetComponent<OneWayTile>();
-                //var agingTile = child.GetComponent<AgeModifier>();
-
-                //if (crumbleTile != null)
-                //{
-                //    crumbleTile.OnReset();
-                //}
-
-                //if (breakingTile != null)
-                //{
-                //    breakingTile.OnReset();
-                //}
-
-                //if (oneWayTile != null)
-                //{ 
-                //    oneWayTile.OnReset();
-                //}
-
-                //if (agingTile != null)
-                //{ 
-                //    agingTile.OnReset();
-                //}
-
             }
         }
     
