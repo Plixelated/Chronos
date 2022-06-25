@@ -5,12 +5,12 @@ public class ScrollViewSystem : MonoBehaviour
 {
     private ScrollRect scrollRect;
 
-    [SerializeField] private ScrollButton leftButton;
-    [SerializeField] private ScrollButton rightButton;
-    [SerializeField] private ScrollButton topButton;
-    [SerializeField] private ScrollButton bottomButton;
+    public ScrollButton leftButton;
+    public ScrollButton rightButton;
+    public ScrollButton topButton;
+    public ScrollButton bottomButton;
 
-    [SerializeField] private float scrollSpeed = 0.01f;
+    public float scrollSpeed;
 
     // Start is called before the first frame update
     void Start()
