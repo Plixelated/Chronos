@@ -14,6 +14,7 @@ public class SelectionMenu : MonoBehaviour
 
     public void NewLevel()
     { 
-    
+        NewMenu.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 }
