@@ -17,6 +17,9 @@ public class InputMonitor : MonoBehaviour
 
     public static Action<Vector2, float> StartTouch;
     public static Action<Vector2, float> EndTouch;
+    public static Action<Vector2> swipingPosition;
+
+    public bool swiping;
 
     [SerializeField]
     private Camera mainCamera;
@@ -55,10 +58,12 @@ public class InputMonitor : MonoBehaviour
     private void StartTouchPrimary(InputAction.CallbackContext context)
     {
         Broadcaster.Send(StartTouch, Utils.ScreenToWorld(mainCamera, input.player.PrimaryPosition.ReadValue<Vector2>()), (float)context.startTime);
+        swiping = true;
     }
 
     private void EndTouchPrimary(InputAction.CallbackContext context)
     {
+        swiping = false;
         Broadcaster.Send(EndTouch, Utils.ScreenToWorld(mainCamera, input.player.PrimaryPosition.ReadValue<Vector2>()), (float)context.time);
     }
 
@@ -105,5 +110,9 @@ public class InputMonitor : MonoBehaviour
                 timer = xInput = yInput = 0;
             }
         }
+
+        if (swiping)
+            Broadcaster.Send(swipingPosition, PrimaryPosition());
+
     }
 }

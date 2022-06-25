@@ -16,21 +16,28 @@ public class TileManager : MonoBehaviour
 
     public GameObject parent;
 
+    public ParticleSystem placementParticle;
+    public ParticleSystem destructionParticle;
+
     public Vector2 mousePosition;
     public Vector2 tilePosition;
+    public Vector2Int lastPosition;
+    public float swipeDelay;
 
     private void OnEnable()
     {
         TileButton.selectedTile += GetSelectedTile;
         TileButton.selectedSprite += GetSelectedSprite;
-        InputMonitor.StartTouch += GetMousePosition;
+        InputMonitor.EndTouch += ClearPosition;
+        InputMonitor.swipingPosition += GetSwipePosition;
     }
 
     private void OnDisable()
     {
         TileButton.selectedTile -= GetSelectedTile;
         TileButton.selectedSprite -= GetSelectedSprite;
-        InputMonitor.StartTouch -= GetMousePosition;
+        InputMonitor.EndTouch -= ClearPosition;
+        InputMonitor.swipingPosition -= GetSwipePosition;
     }
 
     private void GetSelectedTile(GameObject tile)
@@ -70,6 +77,8 @@ public class TileManager : MonoBehaviour
         tile.prefab = selectedTile;
         tile.color = GetTileColor(tile.prefab);
         tile.tile = Instantiate(currentTile, new Vector3(selectedPosition.x, selectedPosition.y, transform.position.z), Quaternion.identity, parent.transform);
+        placementParticle.transform.position = pos;
+        placementParticle.Play();
         placedTiles.Add(tile);
     }
 
@@ -89,6 +98,8 @@ public class TileManager : MonoBehaviour
             if (pos == tile.position)
             {
                 //tile.tile.gameObject.SetActive(false);
+                destructionParticle.transform.position = pos;
+                destructionParticle.Play();
                 Destroy(tile.tile);
                 placedTiles.Remove(tile);
                 break;
@@ -96,31 +107,46 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private void GetMousePosition(Vector2 position, float time)
+    private void GetSwipePosition(Vector2 position)
     {
-        mousePosition = position;
+        swipeToPlace(position);
+    }
 
-        RaycastHit2D hit = Physics2D.BoxCast(position, new Vector2(0.01f, 0.01f), 0f, Vector2.zero);
+    private void ClearPosition(Vector2 position, float time)
+    {
+        lastPosition = new Vector2Int(-100,-100);
+    }
 
-        if (hit.collider)
+    private void swipeToPlace(Vector2 position)
+    {
+        Vector2Int currentPosition = Vector2Int.RoundToInt(position);
+
+        if(!currentPosition.Equals(lastPosition))
         {
-            var selected = hit.collider.gameObject;
-            Vector2 tilePosition = new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
+            RaycastHit2D hit = Physics2D.BoxCast(new Vector2(Mathf.Round(position.x), Mathf.Round(position.y)), new Vector2(0.01f, 0.01f), 0f, Vector2.zero);
 
-            if (selected.layer == 7)
+            if (hit.collider)
             {
-                if (selectedTile.tag != selected.tag)
+                var selected = hit.collider.gameObject;
+                Vector2 tilePosition = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
+
+                if (selected.layer == 7)
                 {
-                    DeleteTile(tilePosition);
+                    if (selectedTile.tag != selected.tag)
+                    {
+                        DeleteTile(tilePosition);
+                        PlaceTile(tilePosition);
+                    }
+                    else
+                        DeleteTile(tilePosition);
+                }
+                if (selected.layer == 8)
+                {
                     PlaceTile(tilePosition);
                 }
-                else
-                    DeleteTile(tilePosition);
             }
-            if (selected.layer == 8)
-            {
-                PlaceTile(tilePosition);
-            }
+            
+            lastPosition = currentPosition;
         }
     }
 
