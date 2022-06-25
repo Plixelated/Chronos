@@ -14,6 +14,8 @@ public class TileManager : MonoBehaviour
     public List<PlacedTile> placedTiles;
     public MapGenerator mapGenerator;
 
+    public GameObject parent;
+
     public Vector2 mousePosition;
     public Vector2 tilePosition;
 
@@ -66,7 +68,7 @@ public class TileManager : MonoBehaviour
         tile.position = pos;
         tile.prefab = selectedTile;
         tile.color = GetTileColor(tile.prefab);
-        tile.tile = Instantiate(currentTile, new Vector3(selectedPosition.x, selectedPosition.y, transform.position.z), Quaternion.identity);
+        tile.tile = Instantiate(currentTile, new Vector3(selectedPosition.x, selectedPosition.y, transform.position.z), Quaternion.identity, parent.transform);
         placedTiles.Add(tile);
     }
 
@@ -104,19 +106,22 @@ public class TileManager : MonoBehaviour
             var selected = hit.collider.gameObject;
             Vector2 tilePosition = new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
 
-            if (selected.layer == 7)
+            if (this.gameObject.activeSelf)
             {
-                if (selectedTile.tag != selected.tag)
+                if (selected.layer == 7)
                 {
-                    DeleteTile(tilePosition);
+                    if (selectedTile.tag != selected.tag)
+                    {
+                        DeleteTile(tilePosition);
+                        PlaceTile(tilePosition);
+                    }
+                    else
+                        DeleteTile(tilePosition);
+                }
+                if (selected.layer == 8)
+                {
                     PlaceTile(tilePosition);
                 }
-                else
-                    DeleteTile(tilePosition);
-            }
-            if (selected.layer == 8)
-            {
-                PlaceTile(tilePosition);
             }
         }
     }

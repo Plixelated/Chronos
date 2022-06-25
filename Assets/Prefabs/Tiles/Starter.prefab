@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8099399769405589184}
   m_Layer: 7
   m_Name: Starter
-  m_TagString: Untagged
+  m_TagString: Starter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,3 +143,4 @@ MonoBehaviour:
   pathManager: {fileID: 0}
   currentTile: {fileID: 0}
   previousTile: {fileID: 0}
+  start: {x: 0, y: 0, z: 0}
