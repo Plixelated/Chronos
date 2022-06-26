@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class SelectionMenu : MonoBehaviour
 {
-    public GameObject NewMenu;
-    public GameObject EditMenu;
+    public GameObject newMenu;
+    public GameObject editMenu;
 
     public void EditLevel()
-    { 
-    
+    {
+        editMenu.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 
     public void NewLevel()
     { 
-        NewMenu.SetActive(true);
+        newMenu.SetActive(true);
         this.gameObject.SetActive(false);
     }
 }

@@ -58,6 +58,30 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    public void GenerateLevel(GameObject container)
+    {
+        for (int i = 0; i < maps.Count; i++)
+        {
+            for (int x = 0; x < maps[i].width; x++)
+            {
+                for (int y = 0; y < maps[i].height; y++)
+                {
+                    GenerateTile(x, y, i, container);
+                }
+            }
+
+            container.transform.position = startingSpawnLocation;
+
+            if (pathManager.pathways.Count > 0)
+            {
+                if (pathManager.pathways[i] == null)
+                    pathManager.pathways[i] = container;
+            }
+            else
+                pathManager.pathways.Add(container);
+        }
+    }
+
     public void GenerateTile(int x, int y, int counter, GameObject parent) 
     { 
         Color pixelColor = maps[counter].GetPixel(x, y);
