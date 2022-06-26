@@ -24,6 +24,7 @@ public class TileManager : MonoBehaviour
     public Vector2Int lastPosition;
     public float swipeDelay;
 
+
     private void OnEnable()
     {
         TileButton.selectedTile += GetSelectedTile;
@@ -130,7 +131,7 @@ public class TileManager : MonoBehaviour
                 var selected = hit.collider.gameObject;
                 Vector2 tilePosition = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
 
-                if (selected.layer == 7)
+                if (selected.layer == 7 || selected.layer == 6)
                 {
                     if (selectedTile.tag != selected.tag)
                     {

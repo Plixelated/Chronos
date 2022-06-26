@@ -17,6 +17,7 @@ public class EditMenu : MonoBehaviour
     public GridManager gridManager;
     public GameObject editorParent;
     public TileManager tilemanager;
+    public GameObject selectionMenu;
 
     private void Start()
     {
@@ -66,6 +67,12 @@ public class EditMenu : MonoBehaviour
     {
         LoadLevelList();
         LoadEntries();
+    }
+
+    public void Cancel()
+    {
+        selectionMenu.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 
     public void SelectLevelToEdit()

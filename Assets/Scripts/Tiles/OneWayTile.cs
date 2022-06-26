@@ -11,6 +11,7 @@ public class OneWayTile : Tile
 
     public GameObject tileFace;
     public InputMonitor input;
+    public SwipeDetection swipeDetection;
 
     public int xdirection;
     public int ydirection;
@@ -68,6 +69,10 @@ public class OneWayTile : Tile
         { 
             input = FindObjectOfType<InputMonitor>();
         }
+        if (swipeDetection == null)
+        {
+            swipeDetection = FindObjectOfType<SwipeDetection>();
+        }
     }
 
     private void ResetDirections()
@@ -104,6 +109,16 @@ public class OneWayTile : Tile
         if (input.yInput != 0)
         {
             ydirection = (int)input.yInput;
+            xdirection = 0;
+        }
+        if (swipeDetection.xAxis != 0)
+        {
+            xdirection = (int)swipeDetection.xAxis;
+            ydirection = 0;
+        }
+        if (swipeDetection.yAxis != 0)
+        {
+            ydirection = (int)swipeDetection.yAxis;
             xdirection = 0;
         }
 

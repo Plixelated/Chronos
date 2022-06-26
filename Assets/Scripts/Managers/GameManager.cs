@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public bool resetPlayer;
 
     public static Action<bool> resetting;
+    public static Action ageLimit;
 
     public Animator fade;
     public float resetDelay;
@@ -122,6 +123,7 @@ public class GameManager : MonoBehaviour
             {
                 ResetLevel();
                 resetPlayer = true;
+                Broadcaster.Send(ageLimit);
             }
         }
     }

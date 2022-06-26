@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,36 +7,49 @@ public class TestManager : MonoBehaviour
 {
     public GameObject inGameUI;
     public GameObject editorUI;
-    public GameObject player;
-    public GameObject engine;
+    public GameObject playerObject;
     public GameObject level;
     public GameObject tileEditor;
     public GameObject stopButton;
+    public GameObject playerSprite;
+    public GameObject movementValidator;
+
+    public static Action ageResetRequest;
 
     private void OnEnable()
     {
         PlayerController.playerDied += ResetLevel;
+        GameManager.ageLimit += ResetLevel;
     }
     private void OnDisable()
     {
         PlayerController.playerDied -= ResetLevel;
+        GameManager.ageLimit -= ResetLevel;
     }
     public void TestLevel()
     {
+
         foreach (Transform child in level.transform)
         {
-            if (child.gameObject.tag != "Starter")
+            if (child.gameObject.tag == "Starter")
             {
-                Debug.LogWarning("ERROR: NO STARTING TILE FOUND SPAWNING PLAYER IN DEFAULT POSITION");
+                var startingPos = child.GetComponent<StarterTile>().start;
+
+                if (playerSprite.GetComponent<PlayerController>().startingPosition != startingPos)
+                {
+                    playerSprite.GetComponent<PlayerController>().startingPosition = startingPos;
+                }
+                playerSprite.transform.position = startingPos;
+                movementValidator.transform.position = startingPos;
             }
         }
 
         editorUI.SetActive(false);
         inGameUI.SetActive(true);
-        player.SetActive(true);
-        engine.SetActive(true);
+        playerObject.SetActive(true);
         tileEditor.SetActive(false);
         stopButton.SetActive(true);
+        Debug.Log(playerSprite.transform.position);
     }
 
     public IEnumerator ResetDelay()
@@ -59,6 +73,9 @@ public class TestManager : MonoBehaviour
                 {
                     child.gameObject.SetActive(true);
                 }
+                
+                if (child.gameObject.GetComponent<Tile>() != null)
+                    child.gameObject.GetComponent<Tile>().OnReset();
             }
         }
     }
@@ -67,10 +84,11 @@ public class TestManager : MonoBehaviour
     {
         inGameUI.SetActive(false);
         editorUI.SetActive(true);
-        player.SetActive(false);
-        engine.SetActive(false);
+        playerObject.SetActive(false);
         tileEditor.SetActive(true);
         stopButton.SetActive(false);
         ResetTiles();
+        Debug.Log(playerSprite.transform.position);
+        Broadcaster.Send(ageResetRequest);
     }
 }

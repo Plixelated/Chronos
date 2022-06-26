@@ -29,7 +29,9 @@ public class ExportMenu : MonoBehaviour
             exporter.ExportLevel();
         }
 
-        Cancel();
+        fileName = "";
+        inputField.GetComponent<TMP_InputField>().text = fileName;
+        exportMenu.SetActive(false);
     }
 
     public void Cancel()
