@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7915836256976072810}
   m_Layer: 6
   m_Name: Locked Path
-  m_TagString: Path
+  m_TagString: Locked
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,3 +143,4 @@ MonoBehaviour:
   pathManager: {fileID: 0}
   currentTile: {fileID: 0}
   previousTile: {fileID: 0}
+  unlocked: 0

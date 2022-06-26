@@ -17,6 +17,10 @@ TagManager:
   - Path
   - Reset
   - Particle
+  - Stairs
+  - StairsOld
+  - Locked
+  - Key
   layers:
   - Default
   - TransparentFX
