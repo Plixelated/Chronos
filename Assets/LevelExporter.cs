@@ -7,7 +7,7 @@ public class LevelExporter : MonoBehaviour
 {
     public int col, row;
     public TileManager tileManager;
-    public Vector2 offset = new Vector2(6f, 8f);
+    public Vector2 offset;
     public GameObject exportMenu;
     public GameObject confirmationMenu;
     public string fileName;
@@ -15,8 +15,26 @@ public class LevelExporter : MonoBehaviour
     public GameObject saveConfirmation;
     private float saveNotificationTimer = 1f;
 
+    public void SetGridOffset()
+    {
+        if (col == 7 && row == 7)
+        {
+            offset = new Vector2(3, 2);
+        }
+        else if (col == 11 && row == 12)
+        {
+            offset = new Vector2(5, 5);
+        }
+        else if (col == 13 && row == 18)
+        {
+            offset = new Vector2(6, 8);
+        }
+    }
+
     public void ExportLevel()
     {
+        SetGridOffset();
+
         var level = new Texture2D(col, row);
         var levelTiles = tileManager.placedTiles;
 
@@ -41,6 +59,8 @@ public class LevelExporter : MonoBehaviour
 
     public void ExportLevel(string _fileName)
     {
+        SetGridOffset();
+
         var level = new Texture2D(col, row);
         var levelTiles = tileManager.placedTiles;
 

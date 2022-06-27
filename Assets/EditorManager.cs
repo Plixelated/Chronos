@@ -8,6 +8,11 @@ public class EditorManager : MonoBehaviour
     public GridManager gridManager;
     public int defaultZoom;
 
+    public GameObject selectionMenu;
+    public GameObject editorMenu;
+    public GameObject editorEngine;
+    public GameObject grid;
+
     private void Start()
     {
         mainCam.GetComponent<Camera>().orthographicSize = defaultZoom;
@@ -17,10 +22,26 @@ public class EditorManager : MonoBehaviour
     {
         if (gridManager.gameObject.activeSelf)
         {
-            if (mainCam.GetComponent<Camera>().orthographicSize != (gridManager.columns + 1))
+            if (mainCam.GetComponent<Camera>().orthographicSize != (gridManager.columns + 2))
             {
-                mainCam.GetComponent<Camera>().orthographicSize = (gridManager.columns + 1);
+                mainCam.GetComponent<Camera>().orthographicSize = (gridManager.columns + 2);
             }
         }
+    }
+
+    public void EmptyGrid()
+    {
+        foreach (Transform child in grid.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void ExitEditor()
+    {
+        EmptyGrid();
+        editorMenu.SetActive(false);
+        editorEngine.SetActive(false);
+        selectionMenu.SetActive(true);
     }
 }

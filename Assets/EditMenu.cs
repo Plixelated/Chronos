@@ -26,11 +26,15 @@ public class EditMenu : MonoBehaviour
 
     private void LoadLevelList()
     {
+        Debug.Log("FILE PATH: " + Application.persistentDataPath);
+
         if (Directory.Exists(Path.Join(Application.persistentDataPath, "/custom")))
         {
             var customLevels = Directory.GetFiles(Path.Join(Application.persistentDataPath, "/custom"));
 
             savedCustomLevels.AddRange(customLevels);
+
+            Debug.Log("SAVED ENTRIES LOADED");
         }
         else if (!Directory.Exists(Path.Join(Application.persistentDataPath, "/custom")))
         {
@@ -43,6 +47,8 @@ public class EditMenu : MonoBehaviour
             entry.gameObject.GetComponentInChildren<TMP_Text>().text = "No Levels To Load";
         }
 
+        Debug.Log("SAVED ENTRIES: " + savedCustomLevels.Count);
+
     }
 
     private void LoadEntries()
@@ -51,7 +57,17 @@ public class EditMenu : MonoBehaviour
         {
             int entryIndex = i;
             var entry = Instantiate(entries, entriesParent.transform);
-            string[] levelFormatted = savedCustomLevels[i].Split("custom\\");
+            string[] levelFormatted = new string[] { };
+            if (SystemInfo.deviceType == DeviceType.Desktop)
+            {
+                levelFormatted = savedCustomLevels[i].Split("custom\\");
+            }
+            if (SystemInfo.deviceType == DeviceType.Handheld)
+            {
+                levelFormatted = savedCustomLevels[i].Split("custom/");
+            }
+            Debug.Log(savedCustomLevels[i]);
+            Debug.Log(levelFormatted.Length);
             entry.gameObject.GetComponentInChildren<TMP_Text>().text = levelFormatted[1];
             entry.gameObject.GetComponent<Button>().onClick.AddListener( () => OnKeyPressed(entryIndex));
         }
@@ -75,10 +91,27 @@ public class EditMenu : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public void SetSpawningOffset(Texture2D level)
+    {
+        if (level.width == 7 && level.height == 7)
+        {
+            levelGenerator.startingSpawnLocation = new Vector2(-3, -2);
+        }
+        else if (level.width == 11 && level.height == 12)
+        {
+            levelGenerator.startingSpawnLocation = new Vector2(-5, -5);
+        }
+        else if (level.width == 13 && level.height == 18)
+        {
+            levelGenerator.startingSpawnLocation = new Vector2(-6, -8);
+        }
+    }
+
     public void SelectLevelToEdit()
     {
         var level = LoadLevelTexture();
         levelGenerator.maps.Add(level);
+        SetSpawningOffset(level);
         levelGenerator.GenerateLevel(editorParent);
         SetGridSize(level);
         editorEngine.SetActive(true);
@@ -92,12 +125,12 @@ public class EditMenu : MonoBehaviour
         int x_start = 0;
         int y_start = 0;
 
-        if (level.width == 10)
+        if (level.width == 7)
         {
             x_start = -3;
             y_start = -2;
         }
-        else if (level.width == 12)
+        else if (level.width == 11)
         {
             x_start = -5;
             y_start = -5;
@@ -107,6 +140,7 @@ public class EditMenu : MonoBehaviour
             x_start = -6;
             y_start = -8;
         }
+
         gridManager.CreateGrid(level.width, level.height, x_start, y_start);
         gridManager.columns = level.width;
         gridManager.rows = level.height;

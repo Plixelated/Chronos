@@ -15,6 +15,11 @@ public class ReturnPosition : MonoBehaviour
         InputMonitor.StartTouch += GetMousePosition;
     }
 
+    private void OnDisable()
+    {
+        InputMonitor.StartTouch -= GetMousePosition;
+    }
+
     private void GetMousePosition(Vector2 position, float time)
     { 
         mousePosition = position;
