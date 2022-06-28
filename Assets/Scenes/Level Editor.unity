@@ -54177,6 +54177,10 @@ MonoBehaviour:
   editorMenu: {fileID: 1466831506}
   editorEngine: {fileID: 1021422266}
   grid: {fileID: 1022549535}
+  level: {fileID: 794061321}
+  generator: {fileID: 1163440430}
+  saveConfirmation: {fileID: 618197015}
+  tileManager: {fileID: 251007168}
 --- !u!4 &1990545201
 Transform:
   m_ObjectHideFlags: 0

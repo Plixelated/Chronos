@@ -26,6 +26,8 @@ public class MapGenerator : MonoBehaviour
 
     public Color defaultPathColor;
 
+    public static Action<Color, GameObject, Vector2, GameObject> tileData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -106,28 +108,27 @@ public class MapGenerator : MonoBehaviour
                     if (UnityEngine.Random.Range(0, 100) <= threshold)
                     {
                         int alt = UnityEngine.Random.Range(0, pathAlts.Count);
-                        Instantiate<GameObject>(pathAlts[alt], position, Quaternion.identity, parent.transform);
+                        var tile = Instantiate(pathAlts[alt], position, Quaternion.identity, parent.transform);
+                        Broadcaster.Send(tileData, pixelColor, colorMapping.prefab, position+startingSpawnLocation, tile);
+
                     }
                     else
-                        Instantiate<GameObject>(colorMapping.prefab, position, Quaternion.identity, parent.transform);
+                    {
+                        var tile = Instantiate(colorMapping.prefab, position, Quaternion.identity, parent.transform);
+                        Broadcaster.Send(tileData, pixelColor, colorMapping.prefab, position + startingSpawnLocation, tile);
+                    }
                 }
                 else
                 {
-                    var tile = Instantiate<GameObject>(colorMapping.prefab, position, Quaternion.identity, parent.transform);
+                    var tile = Instantiate(colorMapping.prefab, position, Quaternion.identity, parent.transform);
 
                     var swapperTile = tile.GetComponent<Swapper>();
-                    var oneWayTile = tile.GetComponent<OneWayTile>();
 
                     if (swapperTile != null)
                     {
                         swapperTile.PathID = counter + 1;
                     }
 
-                    //if (oneWayTile != null)
-                    //{
-                    //    Broadcaster.Send(showDirectionWindow);
-
-                    //}
                 }
 
                 break;

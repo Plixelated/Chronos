@@ -18,10 +18,22 @@ public class EditMenu : MonoBehaviour
     public GameObject editorParent;
     public TileManager tilemanager;
     public GameObject selectionMenu;
+    public LevelExporter levelExporter;
 
-    private void Start()
+    private void OnEnable()
     {
+        MapGenerator.tileData += GetTileData;
         ActivateMenu();
+    }
+
+    private void OnDisable()
+    {
+        MapGenerator.tileData -= GetTileData;
+        savedCustomLevels.Clear();
+        foreach (Transform child in entriesParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     private void LoadLevelList()
@@ -91,31 +103,37 @@ public class EditMenu : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void SetSpawningOffset(Texture2D level)
+    public Vector2 SetOffset(Texture2D level)
     {
         if (level.width == 7 && level.height == 7)
         {
-            levelGenerator.startingSpawnLocation = new Vector2(-3, -2);
+            return new Vector2(-3, -2);
         }
         else if (level.width == 11 && level.height == 12)
         {
-            levelGenerator.startingSpawnLocation = new Vector2(-5, -5);
+            return new Vector2(-5, -5);
         }
         else if (level.width == 13 && level.height == 18)
         {
-            levelGenerator.startingSpawnLocation = new Vector2(-6, -8);
+            return new Vector2(-6, -8);
         }
+
+        return new Vector2(0, 0);
     }
 
     public void SelectLevelToEdit()
     {
         var level = LoadLevelTexture();
         levelGenerator.maps.Add(level);
-        SetSpawningOffset(level);
+        //SettOffset(level);
+        levelGenerator.startingSpawnLocation = SetOffset(level);
         levelGenerator.GenerateLevel(editorParent);
         SetGridSize(level);
         editorEngine.SetActive(true);
-        LoadLevelTiles();
+        levelExporter.col = level.width;
+        levelExporter.row = level.height;
+        levelExporter.offset = -SetOffset(level);
+        //LoadLevelTiles();
         editorUI.SetActive(true);
         this.gameObject.SetActive(false);
     }
@@ -146,15 +164,30 @@ public class EditMenu : MonoBehaviour
         gridManager.rows = level.height;
     }
 
-    private void LoadLevelTiles()
+    private void GetTileData(Color color, GameObject prefab, Vector2 position, GameObject tileObject)
     {
-        foreach (Transform child in editorParent.transform)
-        {
-            PlacedTile tile = new PlacedTile();
-            tile.position = child.position;
-            tile.tile = child.gameObject; 
-            tilemanager.placedTiles.Add(tile);
-        }
+        LoadLevelTiles(color, prefab, position, tileObject);
+    }
+
+    //private void LoadLevelTiles()
+    //{
+    //    foreach (Transform child in editorParent.transform)
+    //    {
+    //        PlacedTile tile = new PlacedTile();
+    //        tile.position = child.position;
+    //        tile.tile = child.gameObject;
+    //        tilemanager.placedTiles.Add(tile);
+    //    }
+    //}
+
+    private void LoadLevelTiles(Color color, GameObject prefab, Vector2 position, GameObject tileObject)
+    {
+        PlacedTile tile = new PlacedTile();
+        tile.position = position;
+        tile.tile = tileObject;
+        tile.prefab = prefab;
+        tile.color = color;
+        tilemanager.placedTiles.Add(tile);
     }
 
     private Texture2D LoadLevelTexture()
