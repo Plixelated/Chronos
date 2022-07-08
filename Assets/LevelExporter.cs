@@ -43,6 +43,8 @@ public class LevelExporter : MonoBehaviour
             var x = (int)levelTiles[i].position.x + (int)offset.x;
             var y = (int)levelTiles[i].position.y + (int)offset.y;
             var color = levelTiles[i].color;
+            if (color.a != 1)
+                color.a = 1;
             level.SetPixel(x, y, color);
         }
 
