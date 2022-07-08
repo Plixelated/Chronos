@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -9,11 +10,13 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     private bool pointerDown;
     private float pointerDownTimer;
 
-    public float requiredHoldTime;
+    public float requiredHoldTime = 1f;
 
     public UnityEvent onLongClick;
 
-    public void OnPointerDown(PointerEventData eventData)
+    public static Action cancel;
+
+    public virtual void OnPointerDown(PointerEventData eventData)
     { 
         pointerDown = true;
         Debug.Log("OnPointerDown");

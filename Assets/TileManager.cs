@@ -24,6 +24,9 @@ public class TileManager : MonoBehaviour
     public Vector2Int lastPosition;
     public float swipeDelay;
 
+    public bool canPlaceTile;
+
+
 
     private void OnEnable()
     {
@@ -39,6 +42,11 @@ public class TileManager : MonoBehaviour
         TileButton.selectedSprite -= GetSelectedSprite;
         InputMonitor.EndTouch -= ClearPosition;
         InputMonitor.swipingPosition -= GetSwipePosition;
+    }
+
+    private void Awake()
+    {
+        canPlaceTile = true;
     }
 
     private void GetSelectedTile(GameObject tile)
@@ -131,19 +139,23 @@ public class TileManager : MonoBehaviour
                 var selected = hit.collider.gameObject;
                 Vector2 tilePosition = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
 
-                if (selected.layer == 7 || selected.layer == 6)
+                if (canPlaceTile)
                 {
-                    if (selectedTile.tag != selected.tag)
+
+                    if (selected.layer == 7 || selected.layer == 6)
                     {
-                        DeleteTile(tilePosition);
+                        if (selectedTile.tag != selected.tag)
+                        {
+                            DeleteTile(tilePosition);
+                            PlaceTile(tilePosition);
+                        }
+                        else
+                            DeleteTile(tilePosition);
+                    }
+                    if (selected.layer == 8)
+                    {
                         PlaceTile(tilePosition);
                     }
-                    else
-                        DeleteTile(tilePosition);
-                }
-                if (selected.layer == 8)
-                {
-                    PlaceTile(tilePosition);
                 }
             }
             

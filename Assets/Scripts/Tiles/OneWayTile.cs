@@ -9,7 +9,7 @@ public class OneWayTile : Tile
     public bool left;
     public bool right;
 
-    public GameObject tileFace;
+    //public GameObject tileFace;
     public InputMonitor input;
     public SwipeDetection swipeDetection;
 
@@ -31,40 +31,40 @@ public class OneWayTile : Tile
         }
     }
 
-    public void SetDirection()
-    {
-        if (up)
-        {
-            Vector3 rotation = new Vector3(0f, 0f, 0f);
-            Quaternion q = Quaternion.Euler(rotation);
-            tileFace.transform.rotation = q;
-        }
+    //public void SetDirection()
+    //{
+    //    if (up)
+    //    {
+    //        Vector3 rotation = new Vector3(0f, 0f, 0f);
+    //        Quaternion q = Quaternion.Euler(rotation);
+    //        tileFace.transform.rotation = q;
+    //    }
 
-        if (down)
-        {
-            Vector3 rotation = new Vector3(0f, 0f, 180f);
-            Quaternion q = Quaternion.Euler(rotation);
-            tileFace.transform.rotation = q;
-        }
+    //    if (down)
+    //    {
+    //        Vector3 rotation = new Vector3(0f, 0f, 180f);
+    //        Quaternion q = Quaternion.Euler(rotation);
+    //        tileFace.transform.rotation = q;
+    //    }
 
-        if (left)
-        {
-            Vector3 rotation = new Vector3(0f, 0f, 90f);
-            Quaternion q = Quaternion.Euler(rotation);
-            tileFace.transform.rotation = q;
-        }
+    //    if (left)
+    //    {
+    //        Vector3 rotation = new Vector3(0f, 0f, 90f);
+    //        Quaternion q = Quaternion.Euler(rotation);
+    //        tileFace.transform.rotation = q;
+    //    }
 
-        if (right)
-        {
-            Vector3 rotation = new Vector3(0f, 0f, -90f);
-            Quaternion q = Quaternion.Euler(rotation);
-            tileFace.transform.rotation = q;
-        }
-    }
+    //    if (right)
+    //    {
+    //        Vector3 rotation = new Vector3(0f, 0f, -90f);
+    //        Quaternion q = Quaternion.Euler(rotation);
+    //        tileFace.transform.rotation = q;
+    //    }
+    //}
 
     private void Start()
     {
-        SetDirection();
+        //SetDirection();
         if (input == null)
         { 
             input = FindObjectOfType<InputMonitor>();

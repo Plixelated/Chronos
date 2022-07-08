@@ -23,6 +23,10 @@ PrefabInstance:
       propertyPath: particle
       value: 
       objectReference: {fileID: 8350127960675452337}
+    - target: {fileID: 5516818730827486713, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
+      propertyPath: m_TagString
+      value: Reset
+      objectReference: {fileID: 0}
     - target: {fileID: 6581541831258570309, guid: 2ae2e1331fae06f4fab22104248307a2, type: 3}
       propertyPath: m_Sprite
       value: 
