@@ -121,7 +121,7 @@ public class MapGenerator : MonoBehaviour
                 else
                 {
                     var tile = Instantiate(colorMapping.prefab, position, Quaternion.identity, parent.transform);
-
+                    Broadcaster.Send(tileData, pixelColor, colorMapping.prefab, position + startingSpawnLocation, tile);
                     var swapperTile = tile.GetComponent<Swapper>();
 
                     if (swapperTile != null)
