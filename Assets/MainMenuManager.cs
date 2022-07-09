@@ -7,6 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public InputController input;
     public Animator animator;
+    public Animator buttonsAnimator;
 
     private void OnEnable()
     {
@@ -34,6 +35,7 @@ public class MainMenuManager : MonoBehaviour
     public void Skip(InputAction.CallbackContext obj)
     {
         animator.SetTrigger("skip");
+        buttonsAnimator.SetTrigger("skip");
     }
 
 
