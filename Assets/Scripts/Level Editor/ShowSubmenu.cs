@@ -6,10 +6,19 @@ using UnityEngine;
 public class ShowSubmenu : MonoBehaviour
 {
     public GameObject submenu;
-    public TileManager tileManager;
     public RectTransform viewRect;
     public float viewRectHeight = 385;
     public float defaultViewRectHeight;
+
+    private void OnEnable()
+    {
+        TileManager.cancel += Cancel;
+    }
+
+    private void OnDisable()
+    {
+        TileManager.cancel -= Cancel;
+    }
 
     private void Start()
     {
@@ -21,7 +30,6 @@ public class ShowSubmenu : MonoBehaviour
         if (!submenu.activeSelf)
         {
             submenu.gameObject.SetActive(true);
-            tileManager.canPlaceTile = false;
             viewRect.sizeDelta = new Vector2(viewRect.sizeDelta.x, viewRectHeight);
         }
         else if (submenu.activeSelf)
@@ -34,7 +42,6 @@ public class ShowSubmenu : MonoBehaviour
     public void Cancel()
     {
         submenu.gameObject.SetActive(false);
-        tileManager.canPlaceTile = true;
         viewRect.sizeDelta = new Vector2(viewRect.sizeDelta.x, defaultViewRectHeight);
     }
 }

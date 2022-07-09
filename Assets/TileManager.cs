@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -23,10 +24,7 @@ public class TileManager : MonoBehaviour
     public Vector2 tilePosition;
     public Vector2Int lastPosition;
     public float swipeDelay;
-
-    public bool canPlaceTile;
-
-
+    public static Action cancel;
 
     private void OnEnable()
     {
@@ -44,10 +42,6 @@ public class TileManager : MonoBehaviour
         InputMonitor.swipingPosition -= GetSwipePosition;
     }
 
-    private void Awake()
-    {
-        canPlaceTile = true;
-    }
 
     private void GetSelectedTile(GameObject tile)
     {
@@ -139,11 +133,13 @@ public class TileManager : MonoBehaviour
                 var selected = hit.collider.gameObject;
                 Vector2 tilePosition = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
 
-                if (canPlaceTile)
-                {
+                //if (canPlaceTile)
+                //{
 
                     if (selected.layer == 7 || selected.layer == 6)
                     {
+                        Broadcaster.Send(cancel);
+
                         if (selectedTile.tag != selected.tag)
                         {
                             DeleteTile(tilePosition);
@@ -154,9 +150,11 @@ public class TileManager : MonoBehaviour
                     }
                     if (selected.layer == 8)
                     {
+                        Broadcaster.Send(cancel);
+
                         PlaceTile(tilePosition);
                     }
-                }
+                //}
             }
             
             lastPosition = currentPosition;
