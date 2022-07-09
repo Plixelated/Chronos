@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TileManager : MonoBehaviour
 {
@@ -133,13 +134,13 @@ public class TileManager : MonoBehaviour
                 var selected = hit.collider.gameObject;
                 Vector2 tilePosition = new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
 
-                //if (canPlaceTile)
-                //{
+                if (!EventSystem.current.IsPointerOverGameObject() ||
+                EventSystem.current.currentSelectedGameObject == null)
+                {
+                    Broadcaster.Send(cancel);
 
                     if (selected.layer == 7 || selected.layer == 6)
                     {
-                        Broadcaster.Send(cancel);
-
                         if (selectedTile.tag != selected.tag)
                         {
                             DeleteTile(tilePosition);
@@ -150,14 +151,13 @@ public class TileManager : MonoBehaviour
                     }
                     if (selected.layer == 8)
                     {
-                        Broadcaster.Send(cancel);
-
                         PlaceTile(tilePosition);
                     }
-                //}
+                }
             }
-            
+
             lastPosition = currentPosition;
+
         }
     }
 
