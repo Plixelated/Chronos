@@ -21,6 +21,10 @@ public class MainMenuManager : MonoBehaviour
     private void Awake()
     {
         input = new InputController();
+        if (Application.targetFrameRate <= 120)
+            Application.targetFrameRate = 120;
+        else if (Application.targetFrameRate <= 60)
+            Application.targetFrameRate = 60;
     }
     private void Start()
     {

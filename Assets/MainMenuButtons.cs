@@ -16,6 +16,11 @@ public class MainMenuButtons : MonoBehaviour
         level.LoadLevelSelect();
     }
 
+    public void EditorButton()
+    {
+        level.LoadSpecificLevel("Level Editor");
+    }
+
     public void SettingsButton()
     {
         Debug.Log("SETTINGS");
